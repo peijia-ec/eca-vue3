@@ -1,7 +1,7 @@
-import { ApiService } from './ApiService'
+import { useApiService } from './useApiService'
 
-export function UserService () {
-  const { ecApi } = ApiService()
+export function useUserService () {
+  const { ecApi } = useApiService()
 
   const fetchAllUsers = (params) => {
     const { page, perPage, search, suspicious, referral, method, sortOrder, sortField } = params

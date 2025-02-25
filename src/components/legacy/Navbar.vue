@@ -2,20 +2,17 @@
   <div
     class="navbar container"
     role="navigation"
-    aria-label="main navigation"
-  >
+    aria-label="main navigation">
     <div class="navbar-brand">
       <router-link
         class="navbar-item"
-        :to="{ name: 'home' }"
-      >
+        :to="{ name: 'home' }">
         {{ $local.countryCode }} ADMIN
       </router-link>
       <a
         class="navbar-burger"
-        :class="{'is-active': active}"
-        @click="active = !active"
-      >
+        :class="{ 'is-active': active }"
+        @click="active = !active">
         <span aria-hidden="true" />
         <span aria-hidden="true" />
         <span aria-hidden="true" />
@@ -23,80 +20,67 @@
     </div>
     <div
       class="navbar-menu"
-      :class="{'is-active': active}"
-      @click="active = false"
-    >
+      :class="{ 'is-active': active }"
+      @click="active = false">
       <div class="navbar-start">
         <auth-link
           class="navbar-item"
-          route-name="users"
-        >
+          route-name="users">
           Users
         </auth-link>
         <auth-link
           class="navbar-item"
-          route-name="orders"
-        >
+          route-name="orders">
           Orders
         </auth-link>
         <auth-link
           class="navbar-item"
-          route-name="otc"
-        >
+          route-name="otc">
           OTC
         </auth-link>
         <auth-link
           class="navbar-item"
-          route-name="Sell"
-        >
+          route-name="Sell">
           Sell
         </auth-link>
         <auth-link
           class="navbar-item"
-          route-name="BatchPayouts"
-        >
+          route-name="BatchPayouts">
           Payout
         </auth-link>
         <auth-link
           class="navbar-item"
-          route-name="bank"
-        >
+          route-name="bank">
           Bank
         </auth-link>
         <auth-link
           class="navbar-item"
-          route-name="verification"
-        >
+          route-name="verification">
           Verify
         </auth-link>
         <auth-link
           class="navbar-item"
-          route-name="BankVerify"
-        >
+          route-name="BankVerify">
           Verify B
         </auth-link>
         <auth-link
           class="navbar-item"
-          route-name="Errors"
-        >
+          route-name="Errors">
           Errors
         </auth-link>
         <auth-link
           class="navbar-item"
-          route-name="Coins"
-        >
+          route-name="Coins">
           Coins
         </auth-link>
         <auth-link
           class="navbar-item"
-          route-name="market"
-        >
+          route-name="market">
           Market
         </auth-link>
         <auth-link
           class="navbar-item"
-          route-name="search"
-        >
+          route-name="search">
           Search
         </auth-link>
       </div>
@@ -106,8 +90,7 @@
             v-if="$store.state.goauth.token"
             :src="$store.state.goauth.photo"
             style="border-radius: 50%"
-            referrerPolicy="no-referrer"
-          >
+            referrerPolicy="no-referrer">
         </div>
         <div class="navbar-item">
           <b-button
@@ -115,8 +98,7 @@
             size="is-small"
             type="is-danger"
             outlined
-            @click="logout"
-          >
+            @click="logout">
             Sign out
           </b-button>
         </div>
@@ -124,21 +106,19 @@
           {{ time }}
           <span
             class="has-text-grey-lighter"
-            style="padding-left:10px"
-          >v{{ $root.version }}</span>
+            style="padding-left:10px">v{{ $root.version }}</span>
         </div>
       </div>
     </div>
     <b-loading
       :is-full-page="true"
       :active.sync="loadingSpinner"
-      :can-cancel="false"
-    />
+      :can-cancel="false" />
   </div>
 </template>
 
 <script>
-import AuthLink from './parts/AuthLink.vue'
+import AuthLink from '../new/parts/AuthLink.vue'
 import moment from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
@@ -147,7 +127,7 @@ moment.extend(timezone)
 
 export default {
   name: 'Order',
-  components: {AuthLink},
+  components: { AuthLink },
   props: {
     isLoading: {
       type: Boolean,
@@ -207,7 +187,7 @@ export default {
 </script>
 
 <style scoped>
-  .hide {
-    display: none;
-  }
+.hide {
+  display: none;
+}
 </style>

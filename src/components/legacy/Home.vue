@@ -301,12 +301,19 @@
 
 <script>
 import { mapState } from 'vuex'
+import { useRoleAccess } from '@/composables/useRoleAccess'
 
 export default {
   name: 'Home',
   data () {
     return {
       infoRefresh: false
+    }
+  },
+  setup () {
+    const { routeAccess } = useRoleAccess()
+    return {
+      routeAccess
     }
   },
   computed: {

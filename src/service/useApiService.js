@@ -2,7 +2,7 @@ import store from '@/store'
 import sendApi from '@/api'
 import local from '@/localisation'
 
-export function ApiService () {
+export function useApiService () {
 
   const ecApi = (api, action, data = {}) => {
     return new Promise((resolve, reject) => {

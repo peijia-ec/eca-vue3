@@ -13,7 +13,7 @@ declare module 'vue' {
     Affiliates: typeof import('./src/components/legacy/Affiliates.vue')['default']
     AllOrders: typeof import('./src/components/legacy/parts/order/AllOrders.vue')['default']
     AppCoins: typeof import('./src/components/legacy/coins/AppCoins.vue')['default']
-    AuthLink: typeof import('./src/components/legacy/parts/AuthLink.vue')['default']
+    AuthLink: typeof import('./src/components/new/parts/AuthLink.vue')['default']
     AuthSignalLogs: typeof import('./src/components/legacy/parts/AuthSignalLogs.vue')['default']
     Bank: typeof import('./src/components/legacy/Bank.vue')['default']
     BankCsvUpload: typeof import('./src/components/legacy/parts/BankCsvUpload.vue')['default']

@@ -72,11 +72,11 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { FilterMatchMode } from '@primevue/core/api'
-import { UserService } from '@/service/UserService'
+import { useUserService } from '@/service/useUserService'
 
 defineEmits(['click'])
 
-const { fetchAllUsers } = UserService()
+const { fetchAllUsers } = useUserService()
 
 const loading = ref(false)
 const page = ref(1)
