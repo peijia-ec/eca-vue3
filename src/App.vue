@@ -1,7 +1,6 @@
 <script setup>
 import { ref, computed, inject } from 'vue'
 import { RouterView, useRoute, useRouter } from 'vue-router'
-import Navbar from './components/legacy/Navbar.vue'
 import { useStore } from 'vuex'
 import { useHead } from '@unhead/vue'
 import local from '@/localisation'
@@ -117,15 +116,13 @@ async function signOut () {
 <template>
   <div id="app">
     <template v-if="$store.state.goauth.token">
-      <Navbar />
       <div class="container">
-        <router-view v-slot="{ Component }">
-          <transition>
-            <keep-alive>
-              <component :is="Component" />
-            </keep-alive>
-          </transition>
-        </router-view>
+        <router-view />
+        <!-- <router-view v-slot="{ Component }">
+          <keep-alive>
+            <component :is="Component" />
+          </keep-alive>
+        </router-view> -->
       </div>
     </template>
     <template v-if="!$store.state.goauth.token">

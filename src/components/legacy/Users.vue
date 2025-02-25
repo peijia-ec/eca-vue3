@@ -1,10 +1,10 @@
 <template>
-  <section class="section">
-    <h1 class="title">
-      Users
-    </h1>
-    <TestTable />
-    <!-- <b-field
+  <!-- <section class="section"> -->
+  <h1 class="title">
+    Users
+  </h1>
+  <TestTable />
+  <!-- <b-field
       grouped
       group-multiline
     >
@@ -199,7 +199,7 @@
     >
       Refresh
     </b-button> -->
-  </section>
+  <!-- </section> -->
 </template>
 
 <script>

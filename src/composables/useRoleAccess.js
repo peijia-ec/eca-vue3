@@ -32,7 +32,7 @@ export function useRoleAccess () {
     if (!router.hasOwnProperty('options')) {
       return false
     }
-    let info = router.options.routes
+    let info = router.options.routes[0].children
     // Find authorize meta for this route
     const index = info.findIndex(x => x.name === routename)
     const authorize = info[index].meta.authorize

@@ -79,6 +79,7 @@ declare module 'vue' {
     RouterView: typeof import('vue-router')['RouterView']
     SAR: typeof import('./src/components/legacy/goaml/SAR.vue')['default']
     Search: typeof import('./src/components/legacy/Search.vue')['default']
+    SelectButton: typeof import('primevue/selectbutton')['default']
     Sell: typeof import('./src/components/legacy/Sell.vue')['default']
     SmileIdHealthDropdown: typeof import('./src/components/legacy/parts/verification/SmileIdHealthDropdown.vue')['default']
     SnoozedOrders: typeof import('./src/components/legacy/parts/order/SnoozedOrders.vue')['default']
@@ -90,6 +91,7 @@ declare module 'vue' {
     TestTable: typeof import('./src/components/legacy/TestTable.vue')['default']
     TestTable2: typeof import('./src/components/legacy/TestTable2.vue')['default']
     TheWelcome: typeof import('./src/components/TheWelcome.vue')['default']
+    Toast: typeof import('primevue/toast')['default']
     ToggleSwitch: typeof import('primevue/toggleswitch')['default']
     ToggleValue: typeof import('./src/components/legacy/parts/user/ToggleValue.vue')['default']
     Tools: typeof import('./src/components/legacy/Tools.vue')['default']
@@ -108,5 +110,8 @@ declare module 'vue' {
     VerificationImage: typeof import('./src/components/legacy/parts/verification/VerificationImage.vue')['default']
     WebCoins: typeof import('./src/components/legacy/coins/WebCoins.vue')['default']
     WelcomeItem: typeof import('./src/components/WelcomeItem.vue')['default']
+  }
+  export interface ComponentCustomProperties {
+    StyleClass: typeof import('primevue/styleclass')['default']
   }
 }

@@ -25,7 +25,7 @@
             <label for="input-referral">Referral</label>
           </div>
           <IconField>
-            <InputIcon class="fa fa-search" />
+            <InputIcon class="pi pi-search" />
             <InputText
               v-model="filters['global'].value"
               placeholder="Search" />
