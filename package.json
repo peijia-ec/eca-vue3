@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:css": "sass --update src/assets/layout/layout.scss:src/assets/layout/layout.css",
     "preview": "vite preview",
     "test:unit": "vitest",
     "prepare": "cypress install",

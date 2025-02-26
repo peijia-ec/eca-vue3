@@ -46,7 +46,7 @@ const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout()
           referrerPolicy="no-referrer">
       </button>
 
-      <div class="layout-topbar-menu hidden lg:block">
+      <div class="layout-topbar-menu hidden">
         <div class="layout-topbar-menu-content">
           <button type="button" class="layout-topbar-action" @click="signOut">
             <i class="pi pi-sign-out"></i>
