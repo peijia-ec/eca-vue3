@@ -6,6 +6,7 @@ import { createHead } from '@unhead/vue/client'
 
 import PrimeVue from 'primevue/config'
 import Aura from '@primeuix/themes/aura'
+import { definePreset } from '@primeuix/themes'
 
 import App from './App.vue'
 import router from './router'
@@ -25,9 +26,27 @@ const app = createApp(App)
 const head = createHead()
 app.use(head)
 
+const MyPreset = definePreset(Aura, {
+  semantic: {
+    primary: {
+      50: '#f4f3ff',
+      100: '#ece9fe',
+      200: '#dbd5ff',
+      300: '#bfb4fe',
+      400: '#a089fc',
+      500: '#825af8',
+      600: '#7237f0',
+      700: '#6123d9',
+      800: '#521fb8',
+      900: '#461b97',
+      950: '#2a0f66'
+    }
+  }
+})
+
 app.use(PrimeVue, {
   theme: {
-    preset: Aura,
+    preset: MyPreset,
     options: {
       cssLayer: {
         name: "primevue",
