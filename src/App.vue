@@ -1,24 +1,12 @@
 <script setup>
-import { ref, computed, inject } from 'vue'
-import { RouterView, useRoute, useRouter } from 'vue-router'
+import { computed } from 'vue'
+import { RouterView } from 'vue-router'
 import { useStore } from 'vuex'
 import { useHead } from '@unhead/vue'
-import local from '@/localisation'
-import api from '@/api'
+import Login from './views/Login.vue'
 
 const store = useStore()
-const gAuth = inject('gAuth')
-const route = useRoute()
-const router = useRouter()
 
-// Reactive state
-const email = ref(null)
-const error = ref(null)
-const loggingIn = ref(false)
-const hasAuth = ref(false)
-
-// Computed properties
-const auth = computed(() => store.state.goauth)
 const unread = computed(() => store.getters['info/unread'])
 
 // Head management
@@ -26,104 +14,12 @@ useHead({
   title: () => `(${unread}) ECA Admin - Easy Crypto`
 })
 
-/**
- * Used to sign in into the system
- * @returns {*}
- */
-function loginWithGoogle () {
-  // Accessing $root through getCurrentInstance
-  // If you rely on $root, you may need to refactor the approach
-  // or use getCurrentInstance().proxy to access it (not recommended for production)
-  // getCurrentInstance().proxy.$root.signIn()
-
-  // Alternative: Inject and use a global method
-  // const { signIn } = inject('auth')
-  gAuth
-    .signIn()
-    .then(GoogleUser => {
-      const idToken = GoogleUser.getAuthResponse().id_token
-      login(idToken)
-        .then(() => {
-          if (store.state.goauth.roles === null) {
-            signOut()
-          } else {
-            // Successfully logged in
-            store.dispatch('updateAll')
-            store.dispatch('getBanReasons')
-            let roles = store.state.goauth.roles
-            let allRoles = Role
-            let arrRoles = []
-            for (let i in allRoles) {
-              arrRoles.push(allRoles[i])
-            }
-            if (typeof (roles) === 'string') {
-              roles = roles.split(',')
-              console.log('roles:' + roles)
-              if (roles.some(res => arrRoles.includes(res))) {
-                console.log('ok')
-              } else {
-                signOut()
-              }
-            } else {
-              signOut()
-            }
-          }
-        })
-    })
-    .catch(error => {
-      console.log('error', error)
-    })
-}
-
-/**
- * Used to sign in to the system
- * @returns {*}
- */
-async function login (accessToken) {
-  await api(local.authServer, {
-    action: 'login',
-    token: accessToken
-  }, false).then((res) => {
-    if (res.success && res.hasOwnProperty('data') && res.data) {
-      let authdata = {
-        email: res.data.email,
-        name: res.data.name,
-        photo: res.data.photo,
-        roles: res.data.roles,
-        token: res.data.accessToken,
-        refresh: res.data.refreshToken
-      }
-      store.dispatch('goauth/update', authdata)
-    }
-  })
-}
-
-/**
- * Used to sign out from the system
- * @returns {*}
- */
-async function signOut () {
-  let res = await gAuth.signOut()
-  if (res) {
-    await store.dispatch('resetStore')
-    if (route.fullPath !== '/') {
-      await router.push({ path: '/' })
-    }
-  }
-}
 </script>
 
 <template>
   <div id="app">
     <template v-if="$store.state.goauth.token">
-      <div class="container">
-        <router-view />
-        <!-- <router-view v-slot="{ Component }">
-          <keep-alive>
-            <component :is="Component" />
-          </keep-alive>
-        </router-view> -->
-      </div>
+      <router-view />
     </template>
     <template v-if="!$store.state.goauth.token">
       <section class="hero is-fullheight">
@@ -135,14 +31,7 @@ async function signOut () {
               Session found, if this page not redirecting please refresh.
             </div>
             <div v-else>
-              <div class="field">
-                <Button
-                  type="is-primary"
-                  outlined
-                  @click="loginWithGoogle">
-                  Sign In
-                </Button>
-              </div>
+              <Login />
             </div>
           </div>
         </div>

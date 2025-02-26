@@ -1,7 +1,9 @@
 <script setup>
 import { useLayout } from '@/layout/composables/layout'
-import AppConfigurator from './AppConfigurator.vue'
+import { useAuthService } from '@/service/useAuthService'
+// import AppConfigurator from './AppConfigurator.vue'
 
+const { signOut } = useAuthService()
 const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout()
 </script>
 
@@ -35,34 +37,20 @@ const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout()
       </div>
 
       <button
-        class="layout-topbar-menu-button layout-topbar-action">
-        <!-- v-styleclass="{ selector: '@next', enterFromClass: 'hidden', enterActiveClass: 'animate-scalein', leaveToClass: 'hidden', leaveActiveClass: 'animate-fadeout', hideOnOutsideClick: true }"> -->
+        class="layout-topbar-menu-button layout-topbar-action"
+        v-styleclass="{ selector: '@next', enterFromClass: 'hidden', enterActiveClass: 'animate-scalein', leaveToClass: 'hidden', leaveActiveClass: 'animate-fadeout', hideOnOutsideClick: true }">
         <img
           v-if="$store.state.goauth.token"
           :src="$store.state.goauth.photo"
           style="border-radius: 50%"
           referrerPolicy="no-referrer">
-        <!-- <i class="pi pi-ellipsis-v"></i> -->
       </button>
 
       <div class="layout-topbar-menu hidden lg:block">
         <div class="layout-topbar-menu-content">
-          <!-- <button type="button" class="layout-topbar-action">
-            <i class="pi pi-calendar"></i>
-            <span>Calendar</span>
-          </button>
-          <button type="button" class="layout-topbar-action">
-            <i class="pi pi-inbox"></i>
-            <span>Messages</span>
-          </button> -->
-          <button type="button" class="layout-topbar-action">
-            <!-- <i class="pi pi-user"></i> -->
-            <img
-              v-if="$store.state.goauth.token"
-              :src="$store.state.goauth.photo"
-              style="border-radius: 50%"
-              referrerPolicy="no-referrer">
-            <span>Profile</span>
+          <button type="button" class="layout-topbar-action" @click="signOut">
+            <i class="pi pi-sign-out"></i>
+            <span>Sign out</span>
           </button>
         </div>
       </div>

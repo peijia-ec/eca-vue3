@@ -2,6 +2,6 @@
 
 <template>
   <div class="layout-footer">
-    Easy Crypto Admin
+    Easy Crypto Admin {{ $local.countryCode }}
   </div>
 </template>
