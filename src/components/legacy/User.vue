@@ -2,42 +2,35 @@
   <section
     v-if="data"
     :key="data.user.uid"
-    class=""
-  >
+    class="">
     <b-tabs
       :size="$root.mobile ? 'is-small' : null"
-      v-model="activeTab"
-    >
+      v-model="activeTab">
       <b-tab-item
         label="Details"
-        icon="user"
-      >
+        icon="user">
         <div class="columns is-desktop">
           <div class="column is-half-desktop">
             <h2 class="title is-5">
               User Summary
               <b-button
                 v-if="under18User(data.user.birthday)"
-                type="is-warning is-rounded is-small"
-              >
+                type="is-warning is-rounded is-small">
                 &lt; 18 years old
               </b-button>
               <b-button
                 v-if="over70User(data.user.birthday)"
-                type="is-warning is-rounded is-small"
-              >
+                type="is-warning is-rounded is-small">
                 &gt;= 70 years old
               </b-button>
             </h2>
             <b-tooltip
               label="High value customer (HVC) status"
-              type="is-dark"
-            >
+              type="is-dark">
               <b-tag
                 v-if="data.user.notes"
                 type="is-warning"
-                size="is-large"
-              >
+                size="is-large">
                 {{ data.user.notes }}
               </b-tag>
             </b-tooltip>
@@ -50,38 +43,33 @@
                 multilined
                 size="is-large"
                 position="is-bottom"
-                style="margin-left: 5px"
-              >
+                style="margin-left: 5px">
                 <i class="fa fa-question-circle-o cursor" />
               </b-tooltip>
             </p>
             <user-banner
               :user="data.user"
-              @updated="getUserData(data.user.uid)"
-            />
+              @updated="getUserData(data.user.uid)" />
             <div class="buttons is-small">
               <a
                 v-if="data.user.dripId"
                 class="button"
                 target="_blank"
-                :href="'https://www.getdrip.com/'+$local.drip+'/subscribers/' + data.user.dripId"
-              >
+                :href="'https://www.getdrip.com/' + $local.drip + '/subscribers/' + data.user.dripId">
                 <span class="icon"><i class="fa fa-tint" /></span>
                 <span>Drip</span>
               </a>
               <a
                 class="button"
                 target="_blank"
-                :href="'https://kyt.chainalysis.com/users/' + data.user.uid"
-              >
+                :href="'https://kyt.chainalysis.com/users/' + data.user.uid">
                 <span>Chainalysis</span>
               </a>
               <a
                 v-if="data.user.freshdeskId"
                 class="button"
                 target="_blank"
-                :href="'https://easycrypto.freshdesk.com/a/contacts/' + data.user.freshdeskId"
-              >
+                :href="'https://easycrypto.freshdesk.com/a/contacts/' + data.user.freshdeskId">
                 <span class="icon"><i class="fa fa-ticket" /></span>
                 <span>Fresh</span>
               </a>
@@ -90,19 +78,16 @@
               <AccountTypeDropdown
                 :account-type="data.user.accountType"
                 :uid="data.user.uid"
-                @updated="getUserData(data.user.uid)"
-              />
+                @updated="getUserData(data.user.uid)" />
               <RiskTypeDropdown
                 :risk-type="data.user.riskType"
                 :uid="data.user.uid"
-                @updated="getUserData(data.user.uid)"
-              />
+                @updated="getUserData(data.user.uid)" />
             </div>
             <UserSummary
               :user-data="this.data"
               @updated="getUserData(data.user.uid)"
-              @getLimitsData="getLimitsData"
-            />
+              @getLimitsData="getLimitsData" />
             <br>
             <div class="content">
               <h2 class="title is-5">
@@ -124,13 +109,11 @@
                 <p
                   v-for="item in sourceOfFund.sourceFiles"
                   :key="item"
-                  class="is-marginless"
-                >
+                  class="is-marginless">
                   Files:
                   <a
                     v-if="sourceOfFund.sourceFiles.length > 0"
-                    :href="item"
-                  >Link </a>
+                    :href="item">Link </a>
                 </p>
               </div>
               <br>
@@ -166,8 +149,7 @@
                 :current="privacyCoins"
                 :uid="data.user.uid"
                 text="privacy coins"
-                @updated="getUserData(data.user.uid)"
-              />
+                @updated="getUserData(data.user.uid)" />
             </div>
             <br>
             <!--<div class="content">
@@ -194,14 +176,12 @@
               <template #default="props">
                 <b-table-column
                   field="provider"
-                  label="Provider"
-                >
+                  label="Provider">
                   {{ props.row.provider }}
                 </b-table-column>
                 <b-table-column
                   field="id"
-                  label="ID"
-                >
+                  label="ID">
                   {{ props.row.id }}
                 </b-table-column>
               </template>
@@ -212,8 +192,7 @@
               ref="compliancelog"
               :uid="data.user.uid"
               :compliance="data.user.complianceReview"
-              @updated="getUserData(data.user.uid)"
-            />
+              @updated="getUserData(data.user.uid)" />
             <div class="field">
               <toggle-value
                 size="is-small"
@@ -221,8 +200,7 @@
                 :current="data.user.scamTest"
                 :uid="data.user.uid"
                 text="passed scam test"
-                @updated="getUserData(data.user.uid)"
-              />
+                @updated="getUserData(data.user.uid)" />
             </div>
             <AuthSignalLogs :uid="data.user.uid" />
             <br>
@@ -248,15 +226,14 @@
             <template v-if="data.matchingUsers.length">
               <div
                 class="notification is-danger"
-                style="margin-top: 2em;"
-              >
+                style="margin-top: 2em;">
                 <p class="is-size-5">
                   WARNING! Matching users
                 </p>
                 <b-table :data="data.matchingUsers">
                   <template #default="props">
                     <b-table-column>
-                      <router-link :to="{name: 'user', query: {uid: props.row.uid}}">
+                      <router-link :to="{ name: 'user', query: { uid: props.row.uid } }">
                         {{ props.row.email }}
                       </router-link>
                     </b-table-column>
@@ -267,15 +244,14 @@
             <template v-if="data.matchingFingerprints.length">
               <div
                 class="notification is-warning"
-                style="margin-top: 2em;"
-              >
+                style="margin-top: 2em;">
                 <p class="is-size-5">
                   WARNING! Matching fingerprints
                 </p>
                 <b-table :data="data.matchingFingerprints">
                   <template #default="props">
                     <b-table-column>
-                      <router-link :to="{name: 'user', query: {uid: props.row.uid}}">
+                      <router-link :to="{ name: 'user', query: { uid: props.row.uid } }">
                         {{ props.row.email }}
                       </router-link>
                     </b-table-column>
@@ -305,8 +281,7 @@
       </b-tab-item>
       <b-tab-item
         label="Orders"
-        icon="shopping-cart"
-      >
+        icon="shopping-cart">
         <section>
           <div>
             <h2 class="title is-5">
@@ -315,8 +290,7 @@
             <b-button
               type="is-text is-small has-text-primary"
               :loading="processingCsv"
-              @click="downloadCsv"
-            >
+              @click="downloadCsv">
               Download CSV of Completed Orders
             </b-button>
             <p v-if="!data.orders.length">
@@ -326,32 +300,27 @@
               :data="data.orders"
               paginated
               :per-page="50"
-              :loading="ordersLoading"
-            >
+              :loading="ordersLoading">
               <template #default="props">
                 <b-table-column
                   field="date"
-                  label="Date"
-                >
+                  label="Date">
                   <span class="nobreak">{{ $moment(props.row.created).format('DD/MM/YYYY HH:mm') }}</span>
                 </b-table-column>
 
                 <b-table-column
                   field="orderId"
-                  label="ID"
-                >
+                  label="ID">
                   <clipboard icon-only>
                     {{ props.row.orderId }}
                   </clipboard>
                   <router-link
-                    :to="{name: 'user', query: {uid: props.row.uid, orderId: props.row.orderId}}"
-                  >
+                    :to="{ name: 'user', query: { uid: props.row.uid, orderId: props.row.orderId } }">
                     {{ props.row.orderId }}
                   </router-link>
                   <span
                     class="icon"
-                    v-if="!props.row.ownAddress"
-                  >
+                    v-if="!props.row.ownAddress">
                     <i class="fa fa-file-zip-o" />
                   </span>
                 </b-table-column>
@@ -359,19 +328,16 @@
                 <b-table-column
                   field="total"
                   label="Total"
-                  numeric
-                >
+                  numeric>
                   {{ currency(props.row.total) }}
                 </b-table-column>
 
                 <b-table-column
                   field="coins"
-                  label="Coins"
-                >
+                  label="Coins">
                   <div
                     v-for="(coin, i) of formatAddresses(props.row.coins)"
-                    :key="'coinname'+i"
-                  >
+                    :key="'coinname' + i">
                     {{ coin[0] }}
                   </div>
                 </b-table-column>
@@ -379,15 +345,13 @@
                 <b-table-column label="Addr">
                   <div
                     v-for="(coin, i) of formatAddresses(props.row.coins)"
-                    :key="'coinaddress'+i"
-                    class="has-text-grey-light"
-                  >
+                    :key="'coinaddress' + i"
+                    class="has-text-grey-light">
                     <b-tooltip :label="coin[2]">
                       <i>
                         <clipboard
                           :copy-value="coin[2]"
-                          :icon="false"
-                        >{{ coin[1] }}</clipboard>
+                          :icon="false">{{ coin[1] }}</clipboard>
                       </i>
                     </b-tooltip>
                   </div>
@@ -395,41 +359,35 @@
 
                 <b-table-column
                   field="method"
-                  label="Method"
-                >
+                  label="Method">
                   {{ props.row.method }}
                 </b-table-column>
 
                 <b-table-column
                   field="account"
-                  label="Account"
-                >
+                  label="Account">
                   <clipboard>{{ props.row.bankAccount }}</clipboard>
                 </b-table-column>
 
                 <b-table-column
                   field="name"
-                  label="Name"
-                >
+                  label="Name">
                   {{ props.row.bankName }}
                 </b-table-column>
 
                 <b-table-column
                   field="system"
-                  label="System"
-                >
+                  label="System">
                   {{ props.row.new_core ? 'Core' : 'Legacy' }}
                 </b-table-column>
 
                 <b-table-column
                   field="status"
-                  label="Status"
-                >
+                  label="Status">
                   <template v-if="paymentStatus(props.row).status">
                     <b-tooltip
                       :label="paymentStatus(props.row).date"
-                      type="is-dark"
-                    >
+                      type="is-dark">
                       <b-tag :type="paymentStatus(props.row).tag">
                         {{ paymentStatus(props.row).status }}
                       </b-tag>
@@ -440,26 +398,22 @@
                 <b-table-column
                   field="ptrOwnAddress"
                   label="Own Address"
-                  v-if="$local.countryCode === 'NZ'"
-                >
+                  v-if="$local.countryCode === 'NZ'">
                   <span
                     class="icon"
-                    v-if="props.row.direction !== 'sell' && props.row.coins"
-                  >
+                    v-if="props.row.direction !== 'sell' && props.row.coins">
                     {{ checkPtrRecord(props.row.coins) }}
                   </span>
                 </b-table-column>
 
                 <b-table-column
                   field="unusualActivity"
-                  label="Unusual Activity"
-                >
+                  label="Unusual Activity">
                   <UnusualActivityDropdown
                     :order-id="props.row.orderId"
                     :unusual-activity="props.row.unusualActivity"
                     :loading="uaLoading"
-                    @select="setUnusualActivity"
-                  />
+                    @select="setUnusualActivity" />
                 </b-table-column>
               </template>
             </b-table>
@@ -469,8 +423,7 @@
               class="sticky-update-btn"
               icon-left="refresh"
               @click="updateOrders"
-              :class="{'is-loading': ordersLoading}"
-            >
+              :class="{ 'is-loading': ordersLoading }">
               Refresh
             </b-button>
           </div>
@@ -480,60 +433,50 @@
         v-if="orderSelected"
         :label="selectedOrderId"
         icon="shopping-cart"
-        :loading="ordersLoading"
-      >
+        :loading="ordersLoading">
         <Order
           :selected-order-id="selectedOrderId"
-          @update="selectOrder"
-        />
+          @update="selectOrder" />
       </b-tab-item>
       <b-tab-item
         v-if="Object.keys(autobuys).length"
         label="Auto-Buy"
-        icon="bolt"
-      >
+        icon="bolt">
         <UserAutobuys
           :autobuys="autobuys"
-        />
+          :ptr-records="data.ptrRecords" />
       </b-tab-item>
       <b-tab-item
         label="Limits"
-        icon="exclamation-circle"
-      >
+        icon="exclamation-circle">
         <UserLimits
           ref="limits"
           :uid="uid"
-          :user="data.user"
-        />
+          :user="data.user" />
       </b-tab-item>
       <b-tab-item
         label="Limits V2"
-        icon="exclamation-circle"
-      >
+        icon="exclamation-circle">
         <Limit :uid="data.user.uid" />
       </b-tab-item>
       <b-tab-item
         label="Tracker"
-        icon="line-chart"
-      >
+        icon="line-chart">
         <b-table :data="data.trackerManual">
           <template #default="props">
             <b-table-column
               field="date"
-              label="Date"
-            >
+              label="Date">
               {{ props.row.date }}
             </b-table-column>
             <b-table-column
               field="fromSymbol"
-              label="From"
-            >
+              label="From">
               {{ props.row.fromAmount }} {{ props.row.fromSymbol }}
             </b-table-column>
             <b-table-column
               field="toSymbol"
-              label="To"
-            >
+              label="To">
               {{ props.row.toAmount }} {{ props.row.toSymbol }}
             </b-table-column>
           </template>
@@ -541,8 +484,7 @@
       </b-tab-item>
       <b-tab-item
         label="Affiliate"
-        icon="users"
-      >
+        icon="users">
         <template v-if="!!affiliate">
           <div class="content">
             <p>Current balance: {{ price(affiliate.balance) }}</p>
@@ -555,19 +497,16 @@
           <b-table
             :data="affiliate.latest"
             :mobile-cards="false"
-            class="fit-table"
-          >
+            class="fit-table">
             <template #default="props">
               <b-table-column
                 field="date"
-                label="Date"
-              >
+                label="Date">
                 <span class="no-break">{{ $moment(props.row.date).format('MM-DD HH:mm') }}</span>
               </b-table-column>
               <b-table-column
                 field="value"
-                label="Value"
-              >
+                label="Value">
                 {{ price(props.row.value) }}
               </b-table-column>
             </template>
@@ -579,44 +518,37 @@
       </b-tab-item>
       <b-tab-item
         label="Customer Files"
-        icon="file"
-      >
+        icon="file">
         <DocumentFiles :uid="data.user.uid" />
       </b-tab-item>
     </b-tabs>
     <section
       v-if="data.verification"
-      class="section"
-    >
+      class="section">
       <h2 class="title is-4">
         Verification documents
       </h2>
       <!-- Our manual verification images -->
       <VerificationImage
         title="ID image"
-        :url="data.verification.idFront"
-      />
+        :url="data.verification.idFront" />
       <VerificationImage
         v-if="data.verification.idBack"
         title="ID back"
-        :url="data.verification.idBack"
-      />
+        :url="data.verification.idBack" />
       <VerificationImage
         title="Selfie with note"
-        :url="data.verification.photoWithId"
-      />
+        :url="data.verification.photoWithId" />
       <!-- External verification documents, likely from Sumsub -->
       <VerificationImage
         v-for="(doc, i) in externalDocuments"
         :key="doc.link"
-        :title="'Document #' + (i+1)"
-        :url="doc.link"
-      />
+        :title="'Document #' + (i + 1)"
+        :url="doc.link" />
     </section>
     <section
       v-if="hasAccess($roles.Admin)"
-      class="section content"
-    >
+      class="section content">
       <h1>SQL quick commands</h1>
       <h4>Disable EC Wallet</h4>
       <pre><clipboard>UPDATE users SET ecWallet=0 WHERE uid='{{ uid }}';</clipboard></pre>
@@ -675,7 +607,7 @@ export default {
       idImage: null,
       showPah: false,
       showCompliance: false,
-      sourceOfFund: {purpose: '', source: '', sourceFiles: [], limit: ''},
+      sourceOfFund: { purpose: '', source: '', sourceFiles: [], limit: '' },
       naturePurpose: {
         signup: {
           purpose: '', source: ''
@@ -745,7 +677,7 @@ export default {
       },
       immediate: true
     },
-    '$route.query.orderId'() {
+    '$route.query.orderId' () {
       this.openOrder(this.$route.query.orderId)
     }
   },
@@ -798,13 +730,13 @@ export default {
         let data = {}
         if (this.$local.vms.enable) {
           const [udbData, vmsData] = await Promise.all([
-            this.ecApi('admin', 'getUser', {uid}),
+            this.ecApi('admin', 'getUser', { uid }),
             this.verifyApi(`verification/${uid}/${this.$local.countryCode}`, 'GET')
           ])
-          udbData.user = {...udbData.user, ...vmsData.data.data}
+          udbData.user = { ...udbData.user, ...vmsData.data.data }
           data = udbData
         } else {
-          data = await this.ecApi('admin', 'getUser', {uid})
+          data = await this.ecApi('admin', 'getUser', { uid })
         }
         if (!data.user) {
           return
@@ -818,10 +750,10 @@ export default {
         }
 
         // Get source of funds
-        this.sourceOfFund = await this.ecApi('admin', 'getLatestSourceOfFund', {uid})
+        this.sourceOfFund = await this.ecApi('admin', 'getLatestSourceOfFund', { uid })
 
         // get nature and purpose
-        this.naturePurpose = await this.ecApi('admin', 'getNatureAndPurposeInfo', {uid})
+        this.naturePurpose = await this.ecApi('admin', 'getNatureAndPurposeInfo', { uid })
 
         // Process autobuys
         let ab = {}
@@ -939,8 +871,8 @@ export default {
           unusualActivity: value
         })
         if (res) {
-          const foundIndex = this.data.orders.findIndex(x => x.orderId === orderId);
-          this.data.orders[foundIndex].unusualActivity = value;
+          const foundIndex = this.data.orders.findIndex(x => x.orderId === orderId)
+          this.data.orders[foundIndex].unusualActivity = value
           this.$buefy.toast.open(`Updated Order ${orderId} unusual activity`)
           this.uaLoading = false
         }
@@ -956,7 +888,7 @@ export default {
         return str
       }
     },
-    async downloadCsv() {
+    async downloadCsv () {
       if (this.processingCsv) {
         return
       }
@@ -1002,7 +934,7 @@ export default {
     },
     selectOrder (orderId) {
       // add order ID to params
-      this.$router.replace({path: this.$route.fullPath, query: {orderId}})
+      this.$router.replace({ path: this.$route.fullPath, query: { orderId } })
       this.selectedOrderId = orderId
       this.orderSelected = true
       this.activeTab = 2
@@ -1046,7 +978,6 @@ export default {
 </script>
 
 <style scoped>
-
 table {
   width: 100%;
 }
@@ -1057,7 +988,6 @@ table {
 }
 
 .b-tooltip.is-multiline.is-large:after {
-white-space:  pre-line;
+  white-space: pre-line;
 }
-
 </style>

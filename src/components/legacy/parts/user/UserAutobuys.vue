@@ -5,65 +5,61 @@
       animation="slide"
       v-for="(row, i) in Object.keys(userAutobuys)"
       :key="i"
-      :open="row !== 'deleted'"
-    >
+      :open="row !== 'deleted'">
       <template #trigger="card">
         <div
           class="card-header ab-header"
-          role="button"
-        >
+          role="button">
           <h2 class="card-header-title">
             {{ userAutobuys[row].title }}
           </h2>
           <a class="card-header-icon">
             <b-icon
-              :icon="card.open ? 'chevron-up' : 'chevron-down'"
-            />
+              :icon="card.open ? 'chevron-up' : 'chevron-down'" />
           </a>
         </div>
       </template>
       <div
         v-for="id in Object.keys(userAutobuys[row].orders)"
-        :key="'EC'+id"
-      >
+        :key="'EC' + id">
         <h2 class="ab-title">
           <clipboard :icon="false">
             {{ apName(id) }}
           </clipboard>
         </h2>
         <b-table :data="userAutobuys[row].orders[id]">
-          <template #default="props">
+          <template slot-scope="props">
             <b-table-column
               field="symbol"
-              label="Symbol"
-            >
+              label="Symbol">
               {{ props.row.symbol }}
             </b-table-column>
             <b-table-column
               field="percentage"
-              label="%"
-            >
+              label="%">
               {{ props.row.percentage }}
             </b-table-column>
             <b-table-column
               field="address"
-              label="Address"
-            >
+              label="Address">
               <BlockChainLink
                 :symbol="props.row.symbol"
-                :address="props.row.address"
-              />
+                :address="props.row.address" />
+            </b-table-column>
+            <b-table-column
+              v-if="row === 'active'"
+              field="ptrVerification"
+              label="Verified Address Ownership">
+              {{ props.row.addressVerified ? '✅' : '❌' }}
             </b-table-column>
             <b-table-column
               field="created"
-              label="Date Created"
-            >
+              label="Date Created">
               {{ props.row.updated_at }}
             </b-table-column>
             <b-table-column
               field="updated"
-              label="Date Updated"
-            >
+              label="Date Updated">
               {{ props.row.updated }}
             </b-table-column>
           </template>
@@ -84,6 +80,9 @@ export default {
   props: {
     autobuys: {
       type: Object
+    },
+    ptrRecords: {
+      type: Array
     }
   },
   data () {
@@ -102,12 +101,24 @@ export default {
   },
   created () {
     //split autobuy orders into active and deleted
-    for(let row in this.autobuys){
-      if(this.autobuys[row][0].enabled){
+    for (let row in this.autobuys) {
+      if (this.autobuys[row][0].enabled) {
         this.userAutobuys.active.orders[row] = this.autobuys[row]
       } else {
         this.userAutobuys.deleted.orders[row] = this.autobuys[row]
       }
+    }
+    this.checkPtrVerification()
+  },
+  methods: {
+    checkPtrVerification () {
+      const ptrAddresses = this.ptrRecords.map(item => item.address)
+      const userAutobuys = this.userAutobuys.active.orders
+      Object.keys(userAutobuys).forEach(orders => {
+        userAutobuys[orders].forEach(order => {
+          order.addressVerified = ptrAddresses.includes(order.address)
+        })
+      })
     }
   }
 }
@@ -117,10 +128,12 @@ export default {
 .ab-card {
   margin-bottom: 40px;
 }
+
 .ab-title {
   font-size: 1.5rem;
   padding: 10px;
 }
+
 .ab-header {
   background-color: rgb(243, 243, 243);
 }

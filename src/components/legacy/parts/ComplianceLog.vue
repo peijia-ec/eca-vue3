@@ -2,31 +2,27 @@
   <div style="position:relative">
     <b-loading
       :is-full-page="false"
-      :active="loading"
-    />
+      :active="loading" />
     <div class="level is-mobile">
       <div class="level-left">
         <div class="level-item">
           <p
             v-if="!readOnly"
             class="is-size-5"
-            style="margin-bottom: 10px"
-          >
+            style="margin-bottom: 10px">
             Compliance logs
           </p>
         </div>
       </div>
       <div
         v-if="visible"
-        class="level-right"
-      >
+        class="level-right">
         <div class="level-item">
           <div class="tags has-addons">
             <span class="tag is-danger">Flagged for Compliance Review</span>
             <a
               class="tag is-delete"
-              @click="removeReview"
-            />
+              @click="removeReview" />
           </div>
         </div>
       </div>
@@ -39,12 +35,10 @@
     <div
       v-if="!readOnly"
       class="field"
-      style="margin-top:10px"
-    >
+      style="margin-top:10px">
       <button
         class="button is-primary is-small"
-        @click="openModal"
-      >
+        @click="openModal">
         <span class="icon"><i class="fa fa-plus" /></span>
         <span>Take action</span>
       </button>
@@ -55,20 +49,20 @@
     <b-table
       :data="sorted"
       :paginated="true"
-      :per-page="5"
       pagination-size="is-small"
-    >
-      <template #default="props">
+      backend-pagination
+      :per-page="perPage"
+      :total="total"
+      @page-change="onPageChange">
+      <template slot-scope="props">
         <b-table-column
           field="id"
           label=" "
-          style="max-width: 600px;"
-        >
+          style="max-width: 600px;">
           <pre class="clean is-size-7">{{ props.row.why }}</pre>
           <p
             class="help has-text-grey-light"
-            style="margin-top:1em"
-          >
+            style="margin-top:1em">
             {{ props.row.what }}
           </p>
           <p class="help has-text-grey-light">
@@ -79,27 +73,22 @@
 
         <b-table-column
           field="pinned"
-          label=" "
-        >
+          label=" ">
           <span
             class="icon cursor"
-            @click="pin(props.row)"
-          ><i
-            class="fa fa-thumb-tack"
-            :class="{'has-text-primary': props.row.pinned, 'has-text-grey-lighter': !props.row.pinned}"
-          /></span>
+            @click="pin(props.row)"><i
+              class="fa fa-thumb-tack"
+              :class="{ 'has-text-primary': props.row.pinned, 'has-text-grey-lighter': !props.row.pinned }" /></span>
           <span
             class="icon cursor has-text-grey-lighter"
-            @click="deleteLog(props.row)"
-          ><i class="fa fa-trash" /></span>
+            @click="deleteLog(props.row)"><i class="fa fa-trash" /></span>
         </b-table-column>
       </template>
     </b-table>
     <b-modal
       v-if="user"
       id="modal"
-      :active.sync="show"
-    >
+      :active.sync="show">
       <!-- Popup modal with a note field, and button options to set the customer status -->
       <div class="box content">
         <h3>{{ user.displayName }}</h3>
@@ -110,22 +99,19 @@
             <b-button
               :loading="loading"
               size="is-small"
-              @click="bankNameNoMatch"
-            >
+              @click="bankNameNoMatch">
               Send non-matching bank name email
             </b-button>
             <b-button
               :loading="loading"
               size="is-small"
-              @click="snooze(orderId)"
-            >
+              @click="snooze(orderId)">
               Snooze Order
             </b-button>
             <b-button
               :loading="loading"
               size="is-small"
-              @click="kytHighRisk"
-            >
+              @click="kytHighRisk">
               Send KYT Email
             </b-button>
           </div>
@@ -134,13 +120,11 @@
         </template>
         <div
           v-if="!user.fraud"
-          class="field"
-        >
+          class="field">
           <b-button
             :loading="loading"
             size="is-small"
-            @click="mlmStuckOrder"
-          >
+            @click="mlmStuckOrder">
             Send MLM education email and release orders
           </b-button>
         </div>
@@ -148,8 +132,7 @@
           <b-input
             ref="notes"
             v-model="note"
-            type="textarea"
-          />
+            type="textarea" />
         </b-field>
         <h4>User</h4>
         <b-field>
@@ -157,16 +140,14 @@
             v-model="flags.ban"
             size="is-small"
             :native-value="false"
-            type="is-success"
-          >
+            type="is-success">
             No ban
           </b-radio-button>
           <b-radio-button
             v-model="flags.ban"
             size="is-small"
             :native-value="true"
-            type="is-danger"
-          >
+            type="is-danger">
             Ban account
           </b-radio-button>
         </b-field>
@@ -177,14 +158,12 @@
           <b-field
             v-for="(res, index) in banReasons"
             :key="index"
-            class="ban-field"
-          >
+            class="ban-field">
             <div class="checkbox-field">
               <b-checkbox
                 v-model="selectedBanReason"
                 :native-value="res.reason"
-                :disabled="limitBanReasonToOne(res.reason)"
-              >
+                :disabled="limitBanReasonToOne(res.reason)">
                 {{ res.reason }}
               </b-checkbox>
               <b-tooltip
@@ -192,25 +171,21 @@
                 multilined
                 style="margin-left: .5em;"
                 position="is-right"
-                class="clean"
-              >
+                class="clean">
                 <i class="fa fa-question-circle-o cursor" />
               </b-tooltip>
             </div>
             <!-- if ban reason already exist / else? -->
             <div
               v-show="selectedBanReason.includes(res.reason) && res.subOptions"
-              style="margin: 1em;"
-            >
+              style="margin: 1em;">
               <b-field
                 v-for="(subRes, subIndex) in res.subOptions"
                 :key="subIndex"
-                class="ban-field"
-              >
+                class="ban-field">
                 <b-checkbox
                   v-model="selectedBanReason"
-                  :native-value="subRes.reason"
-                >
+                  :native-value="subRes.reason">
                   {{ subRes.reason }}
                 </b-checkbox>
               </b-field>
@@ -239,14 +214,12 @@
         <br>
         <div
           v-for="(name, key) in susFlagNames"
-          :key="'susflag'+key"
-          class="field"
-        >
+          :key="'susflag' + key"
+          class="field">
           <b-checkbox
             v-model="user[key]"
             :true-value="1"
-            :false-value="0"
-          >
+            :false-value="0">
             {{ name }}
           </b-checkbox>
         </div>
@@ -254,20 +227,17 @@
           <b-checkbox
             v-model="unusualActivity"
             :true-value="1"
-            :false-value="0"
-          >
+            :false-value="0">
             Unusual Activity form completed
           </b-checkbox>
         </div>
         <div
           class="field"
-          v-if="flags.ban"
-        >
+          v-if="flags.ban">
           <b-checkbox
             v-model="dontUnsubscribe"
             :true-value="true"
-            :false-value="false"
-          >
+            :false-value="false">
             Don't unsubscribe from emails
           </b-checkbox>
         </div>
@@ -279,8 +249,7 @@
             :disabled="flags.ban"
             size="is-small"
             native-value="process"
-            type="is-success"
-          >
+            type="is-success">
             Normal
           </b-radio-button>
           <b-radio-button
@@ -288,8 +257,7 @@
             :disabled="flags.ban"
             size="is-small"
             native-value="htr"
-            type="is-warning"
-          >
+            type="is-warning">
             Hold til received
           </b-radio-button>
           <b-radio-button
@@ -297,8 +265,7 @@
             :disabled="flags.ban"
             size="is-small"
             native-value="hold"
-            type="is-dark"
-          >
+            type="is-dark">
             Hold
           </b-radio-button>
           <b-radio-button
@@ -306,23 +273,20 @@
             :disabled="flags.ban"
             size="is-small"
             native-value="freeze"
-            type="is-danger"
-          >
+            type="is-danger">
             Don't process
           </b-radio-button>
         </b-field>
         <div
           v-if="flags.orders === 'process' && user.pah && !user.suspicious"
-          class="field"
-        >
+          class="field">
           <b-checkbox v-model="flags.releaseOrders">
             Also release any held orders
           </b-checkbox>
         </div>
         <div
           v-if="errorMessage"
-          class="field"
-        >
+          class="field">
           <p class="error has-text-danger">
             {{ errorMessage }}
           </p>
@@ -331,8 +295,7 @@
           <b-button
             type="is-primary"
             :loading="loading"
-            @click="save"
-          >
+            @click="save">
             <span class="icon"><i class="fa fa-save" /></span>
             <span>Save</span>
           </b-button>
@@ -341,10 +304,12 @@
           <li>To "process" an order means to convert from fiat to crypto</li>
           <li><b>Ban</b> means the user cannot create an order or verify their account</li>
           <li>
-            <b>Hold til received</b> means process orders at the current market rate, and automatically deliver the order once funds are received
+            <b>Hold til received</b> means process orders at the current market rate, and automatically deliver the order
+            once funds are received
             in our bank account
           </li>
-          <li><b>Hold</b> means process orders at the current market rate, but don't send to the customer until manually released</li>
+          <li><b>Hold</b> means process orders at the current market rate, but don't send to the customer until manually
+            released</li>
           <li><b>Don't process</b> means to "freeze" the customer orders and DO NOT convert their fiat to crypto</li>
         </ul>
       </div>
@@ -358,7 +323,7 @@ import { mapState } from 'vuex'
 
 export default {
   name: 'ComplianceLog',
-  components: {UserTags},
+  components: { UserTags },
   props: {
     uid: String,
     readOnly: Boolean,
@@ -375,6 +340,9 @@ export default {
       note: '',
       loading: false,
       log: [],
+      perPage: 5,
+      page: 1,
+      total: 0,
       user: null,
       userOriginal: null,
       message: null,
@@ -398,14 +366,14 @@ export default {
       errorMessage: null,
       dontUnsubscribe: false,
       banReasons: [
-        {reason: 'Money Mule', hint: 'These are people who are moving money for someone else - this could involve receiving money linked to criminal proceeds and sending it somewhere on instruction from a criminal (they may or may not know the funds are from a criminal, and may or may not be under duress). \n E.g. a family member being forced to move money for someone'},
-        {reason: 'Scam', hint: 'A scam is when someone has been deceived into sending money or personal information under the guise of something else. \n\n 1. Fake investment opportunities \n 2. Fake job opportunities (these also fall under the money mule heading) \n 3. Fake relationships \n 4. Unsustainable network marketing structures \n 5. Fake support people (e.g. tech support) gaining access to a device using a software like teamviewer.', subOptions: [{reason: 'Investment/broker scam'}, {reason: 'Job scam'}, {reason: 'Romance scam'}, {reason: 'MLM scam'}, {reason: 'Remote access scam'}]},
-        {reason: 'Fraud', hint: 'A fraud is when someone is unknowingly targeted (e.g. hacking) \n\n 1. Stolen identity details are used to create a new account \n 2. A pre-existing account is hacked', subOptions: [{reason: 'Fake ID'}, {reason: 'Compromised account'}, {reason: 'Unauthorized payment'}]},
-        {reason: 'Outside risk profile', hint: 'When a customer performs an activity that sits outside our risk profile as a business (i.e. what we will accept/condone through our services). This includes when someone refuses to provide the information we need to carry out our compliance processes.'},
-        {reason: 'Abusive/Threatening', hint: 'When someone becomes verbally abusive and/or threatening to our staff during communications online, over the phone or in person.'},
-        {reason: 'Account issues', hint: 'When an account issue has meant this account is no longer active/required.', subOptions: [{reason: 'Duplicate account'}, {reason: 'Customer wants to close account'}]},
-        {reason: 'Temporary ban', hint: 'When an account needs to be disabled to prevent any further activity while we investigate something and/or wait for a response from a customer or other party (e.g. Police).'},
-        {reason: 'Other', hint: 'When none of the above scenarios apply'}
+        { reason: 'Money Mule', hint: 'These are people who are moving money for someone else - this could involve receiving money linked to criminal proceeds and sending it somewhere on instruction from a criminal (they may or may not know the funds are from a criminal, and may or may not be under duress). \n E.g. a family member being forced to move money for someone' },
+        { reason: 'Scam', hint: 'A scam is when someone has been deceived into sending money or personal information under the guise of something else. \n\n 1. Fake investment opportunities \n 2. Fake job opportunities (these also fall under the money mule heading) \n 3. Fake relationships \n 4. Unsustainable network marketing structures \n 5. Fake support people (e.g. tech support) gaining access to a device using a software like teamviewer.', subOptions: [{ reason: 'Investment/broker scam' }, { reason: 'Job scam' }, { reason: 'Romance scam' }, { reason: 'MLM scam' }, { reason: 'Remote access scam' }] },
+        { reason: 'Fraud', hint: 'A fraud is when someone is unknowingly targeted (e.g. hacking) \n\n 1. Stolen identity details are used to create a new account \n 2. A pre-existing account is hacked', subOptions: [{ reason: 'Fake ID' }, { reason: 'Compromised account' }, { reason: 'Unauthorized payment' }] },
+        { reason: 'Outside risk profile', hint: 'When a customer performs an activity that sits outside our risk profile as a business (i.e. what we will accept/condone through our services). This includes when someone refuses to provide the information we need to carry out our compliance processes.' },
+        { reason: 'Abusive/Threatening', hint: 'When someone becomes verbally abusive and/or threatening to our staff during communications online, over the phone or in person.' },
+        { reason: 'Account issues', hint: 'When an account issue has meant this account is no longer active/required.', subOptions: [{ reason: 'Duplicate account' }, { reason: 'Customer wants to close account' }] },
+        { reason: 'Temporary ban', hint: 'When an account needs to be disabled to prevent any further activity while we investigate something and/or wait for a response from a customer or other party (e.g. Police).' },
+        { reason: 'Other', hint: 'When none of the above scenarios apply' }
       ]
     }
   },
@@ -430,7 +398,7 @@ export default {
         this.closeModal() // trigger function in parent element
       }
     },
-    'selectedBanReason'(newVal) {
+    'selectedBanReason' (newVal) {
       if (newVal.includes('Duplicate account')) {
         this.dontUnsubscribe = true
       } else {
@@ -498,12 +466,19 @@ export default {
       }
       this.loading = true
       try {
-        let data = await this.apiv2('admin', 'getComplianceLog', {uid: this.uid})
-        this.log = data.log
-        this.user = data.user
-        // Create a copy of the original user data, so that we can compare this later for any changes
-        this.userOriginal = JSON.parse(JSON.stringify(data.user))
-        this.flags = this.toFlags(data.user)
+        let res = await this.apiv2('api-admin/index', 'user/getComplianceLogs', {
+          page: this.page,
+          limit: this.perPage,
+          uid: this.uid
+        })
+        this.log = res.data
+        this.total = res.total
+        if (this.log.length) {
+          this.user = this.log[0].user
+          // Create a copy of the original user data, so that we can compare this later for any changes
+          this.userOriginal = JSON.parse(JSON.stringify(this.user))
+          this.flags = this.toFlags(this.user)
+        }
         this.message = !this.log.length ? 'This user has no compliance notes yet.' : null
         this.complianceResponse()
       } catch (e) {
@@ -635,7 +610,7 @@ export default {
         this.errorMessage = 'Please select a ban reason'
         setTimeout(() => {
           this.errorMessage = ''
-        }, 3000);
+        }, 3000)
         return
       }
 
@@ -674,7 +649,7 @@ export default {
       }
       this.unusualActivity = false
 
-      if(f.ban && !this.user.ban_reason) {
+      if (f.ban && !this.user.ban_reason) {
         this.flags.banReason = this.banReason
       } else if (f.ban && this.user.ban_reason) {
         // if ban reason is already filled do not override with null value
@@ -803,14 +778,18 @@ Can you please give me some more information on where you got this address and w
       } catch (e) {
         console.error(e)
       }
-    }
+    },
+    onPageChange (page) {
+      this.page = page
+      this.update()
+    },
   }
 }
 </script>
 
 <style scoped>
 .b-tooltip.is-multiline.is-medium:after {
-white-space:  pre-line;
+  white-space: pre-line;
 }
 
 .ban-field {

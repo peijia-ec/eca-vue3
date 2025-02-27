@@ -9,8 +9,7 @@
         <b-tag
           rounded
           v-if="data.order.unusualActivity"
-          :class="'is-size-7 ' + UNUSUAL_ACTIVITY[data.order.unusualActivity].class"
-        >
+          :class="'is-size-7 ' + UNUSUAL_ACTIVITY[data.order.unusualActivity].class">
           {{ UNUSUAL_ACTIVITY[data.order.unusualActivity].label }}
         </b-tag>
       </h2>
@@ -26,15 +25,13 @@
         <b-tag
           :type="orderOrigin.tag"
           rounded
-          class="ml-2"
-        >
+          class="ml-2">
           {{ orderOrigin.label }}
         </b-tag>
       </p>
       <div
         v-if="delayedCoins.length && !data.order.completed"
-        class="notification is-warning"
-      >
+        class="notification is-warning">
         <span class="icon"><i class="fa fa-exclamation-triangle" /></span>
         {{ delayedCoins.join(', ') }} currently closed for withdrawal on the exchange
       </div>
@@ -45,29 +42,25 @@
         </p>
         <div
           v-else-if="!data.order.hold && data.order.holdTilReceived && !data.order.received"
-          class="notification is-warning"
-        >
+          class="notification is-warning">
           <span class="icon"><i class="fa fa-exclamation-triangle" /></span>
           Automatically held until payment received in bank account
         </div>
         <p
           v-if="!data.order.received && data.order.direction === 'buy'"
-          :class="{'notification is-warning': data.order.hold}"
-        >
+          :class="{ 'notification is-warning': data.order.hold }">
           <span class="icon"><i class="fa fa-exclamation-triangle" /></span>
           Payment not yet confirmed in bank account
         </p>
         <p
           v-else-if="!data.order.paid && data.order.direction === 'sell'"
-          class="notification is-warning"
-        >
+          class="notification is-warning">
           <span class="icon"><i class="fa fa-exclamation-triangle" /></span>
           Crypto not deposited
         </p>
         <div
           v-if="data.order.error && !data.order.completed"
-          class="notification is-danger"
-        >
+          class="notification is-danger">
           <!-- This comes from autoec.php/logError() -->
           <span class="icon"><i class="fa fa-exclamation-triangle" /></span>
           <b>Error:</b> {{ data.order.error }}
@@ -75,13 +68,11 @@
         <div
           v-if="hasAccess($roles.Compliance) && !data.order.completed"
           class="field"
-          style="margin-top: 1em"
-        >
+          style="margin-top: 1em">
           <button
             class="button"
-            :class="{'is-danger': held, 'is-primary': !held}"
-            @click="toggleHold"
-          >
+            :class="{ 'is-danger': held, 'is-primary': !held }"
+            @click="toggleHold">
             {{ held ? 'Release' : 'Hold' }}
             order
           </button>
@@ -106,19 +97,16 @@
           </b-table-column>
           <b-table-column
             :visible="hasSellProcessingFee"
-            label="Processing Fee"
-          >
+            label="Processing Fee">
             {{ data.items[0].processingFee }}
           </b-table-column>
 
           <b-table-column
             :visible="data.order.direction === 'swap'"
-            label="Changelly ID"
-          >
+            label="Changelly ID">
             <a
               :href="`https://changelly.com/transaction/${props.row.externalId}`"
-              target="_blank"
-            >
+              target="_blank">
               {{ props.row.externalId }}
               <span class="icon"><i class="fa fa-external-link" /></span>
             </a>
@@ -126,30 +114,25 @@
 
           <b-table-column
             :visible="data.order.direction !== 'sell'"
-            :label="sell ? 'Crypto' : $local.currency"
-          >
+            :label="sell ? 'Crypto' : $local.currency">
             {{ sell ? props.row.final : props.row.nzd }}
           </b-table-column>
           <b-table-column
             :visible="data.order.direction === 'sell'"
-            label="Quoted crypto"
-          >
+            label="Quoted crypto">
             {{ cryptoNum(data.order.paid ? props.row.desired : props.row.final) }}
           </b-table-column>
           <b-table-column
             :visible="data.order.direction === 'sell'"
-            label="Deposited crypto"
-          >
+            label="Deposited crypto">
             <template v-if="data.order.paid">
               {{ cryptoNum(props.row.final) }}
               <b-tooltip
                 v-if="parseFloat(props.row.final) < parseFloat(props.row.desired) * 0.999"
-                label="Deposit amount different from initial amount"
-              >
+                label="Deposit amount different from initial amount">
                 <b-icon
                   icon="exclamation-triangle"
-                  type="is-danger"
-                />
+                  type="is-danger" />
               </b-tooltip>
             </template>
           </b-table-column>
@@ -162,14 +145,12 @@
 
           <b-table-column
             label="Quoted (nett)"
-            :visible="data.order.direction === 'sell' && data.items[0].processingFee"
-          >
+            :visible="data.order.direction === 'sell' && data.items[0].processingFee">
             <span>{{ price(nettQuoted) }}</span>
             <b-tooltip
               :label="nettQuotedTooltip"
               multilined
-              style="margin-left: 5px"
-            >
+              style="margin-left: 5px">
               <i class="fa fa-question-circle-o cursor" />
             </b-tooltip>
           </b-table-column>
@@ -190,8 +171,7 @@
               <Refund
                 :order="data.order"
                 :item="props.row"
-                @updated="refundUpdated"
-              />
+                @updated="refundUpdated" />
             </div>
           </b-table-column>
 
@@ -201,10 +181,10 @@
               {{ price(props.row.filled - nettQuoted) }}
               <span
                 class="icon has-text-danger"
-                v-if="Math.abs(diff) >= 0.1"
-              ><i class="fa fa-exclamation-triangle" /></span><br>
+                v-if="Math.abs(diff) >= 0.1"><i class="fa fa-exclamation-triangle" /></span><br>
             </template>
-            <template v-if="data.order.direction === 'buy' && props.row.filled && props.row.quoted && Math.abs(props.row.filled - props.row.quoted) / props.row.quoted > 0.001">
+            <template
+              v-if="data.order.direction === 'buy' && props.row.filled && props.row.quoted && Math.abs(props.row.filled - props.row.quoted) / props.row.quoted > 0.001">
               {{ (((props.row.filled / props.row.quoted) - 1) * 100).toFixed(2) }}%
               <span class="icon has-text-danger"><i class="fa fa-exclamation-triangle" /></span><br>
               {{ cryptoNum(props.row.filled - props.row.quoted) }} {{ props.row.coin }}
@@ -215,35 +195,31 @@
             <blockchain-link
               :symbol="props.row.coin"
               :address="props.row.address"
-              :network="props.row.network"
-            />
+              :network="props.row.network" />
             <br>
             <chainalysis-link
               :symbol="props.row.coin"
-              :address="props.row.address"
-            />
+              :address="props.row.address" />
             <br>
             <div v-if="canEditAddress">
               <a
                 title="Edit address"
                 class="is-size-7 no-break"
-                @click="editAddress(props.row)"
-              >
+                @click="editAddress(props.row)">
                 <span class="icon"><i
-                  class="fa"
-                  :class="settingAddress ? 'fa-refresh' : 'fa-pencil'"
-                /></span>
+                    class="fa"
+                    :class="settingAddress ? 'fa-refresh' : 'fa-pencil'" /></span>
                 Edit Address
               </a>
               <br>
               <a
                 class="is-size-7 no-break"
-                @click="invalidAddress(props.row, 'address')"
-              ><span class="icon"><i class="fa fa-envelope" /></span> Bad address</a><br>
+                @click="invalidAddress(props.row, 'address')"><span class="icon"><i class="fa fa-envelope" /></span> Bad
+                address</a><br>
               <a
                 class="is-size-7 no-break"
-                @click="invalidAddress(props.row, 'memo')"
-              ><span class="icon"><i class="fa fa-envelope" /></span> Bad memo</a>
+                @click="invalidAddress(props.row, 'memo')"><span class="icon"><i class="fa fa-envelope" /></span> Bad
+                memo</a>
             </div>
           </b-table-column>
 
@@ -255,8 +231,7 @@
             <blockchain-link
               v-if="props.row.txid"
               :symbol="props.row.coin"
-              :txid="props.row.txid"
-            />
+              :txid="props.row.txid" />
           </b-table-column>
         </template>
       </b-table>
@@ -271,16 +246,14 @@
           </b-field>
           <div class="buttons">
             <button
-              :class="{'is-loading': settingAddress}"
+              :class="{ 'is-loading': settingAddress }"
               class="button is-success"
-              @click="addressSet()"
-            >
+              @click="addressSet()">
               Set address
             </button>
             <button
               class="button"
-              @click="addressCancel()"
-            >
+              @click="addressCancel()">
               Cancel
             </button>
           </div>
@@ -292,8 +265,7 @@
           <!-- Special functions for NZ refund's user -->
           <article
             v-if="data.order.uid === 'sauwgyXf5VWDCwa9IglQCAQXCtI3' && data.order.completed && data.order.direction === 'sell'"
-            class="message is-danger"
-          >
+            class="message is-danger">
             <div class="message-body is-size-7 content">
               <p>Link to customer {{ manualMatchMethod || 'sell or sell-swap' }} order.</p>
               <p v-if="!manualMatchMethod || manualMatchMethod !== 'sell-swap'">
@@ -302,25 +274,23 @@
               </p>
               <p v-if="!manualMatchMethod || manualMatchMethod === 'sell-swap'">
                 <b-icon icon="exclamation-triangle" />
-                <b>Sell Swap order: This action marks the order as paid, triggers a related Swap Buy order, and transfers the bought crypto to the linked wallet address!</b>
+                <b>Sell Swap order: This action marks the order as paid, triggers a related Swap Buy order, and transfers
+                  the bought crypto to the linked wallet address!</b>
               </p>
               <b-field
                 :message="error.manualMatch"
-                :type="error.manualMatch && 'is-danger'"
-              >
+                :type="error.manualMatch && 'is-danger'">
                 <div class="is-flex">
                   <b-input
                     v-model="manualMatch"
                     @input="error.manualMatch = null"
-                    placeholder="Customer order ID"
-                  />
+                    placeholder="Customer order ID" />
                   <p class="control">
                     <b-button
                       class="button is-primary"
                       :loading="loading"
                       :disabled="invalidOrderId"
-                      @click="manualOrderLink"
-                    >
+                      @click="manualOrderLink">
                       Link
                     </b-button>
                   </p>
@@ -335,7 +305,7 @@
             <tr>
               <td>Email</td>
               <td v-if="!$route.query.uid">
-                <router-link :to="{name: 'user', query: {uid: data.order.uid}}">
+                <router-link :to="{ name: 'user', query: { uid: data.order.uid } }">
                   {{ data.order.email }}
                 </router-link>
               </td>
@@ -370,8 +340,7 @@
                 <b-tooltip
                   label="Easy Crypto fee applied to the order. Related to “What does Easy Crypto charge” % on the order."
                   multilined
-                  style="margin-left: 5px"
-                >
+                  style="margin-left: 5px">
                   <i class="fa fa-question-circle-o cursor" />
                 </b-tooltip>
               </td>
@@ -414,20 +383,17 @@
                 <template v-if="!data.order.completed">
                   <b-tag
                     v-if="data.order.cancelled"
-                    type="is-warning"
-                  >
+                    type="is-warning">
                     {{ data.order.cancelled }}
                   </b-tag>
                   <a
                     v-if="!data.order.cancelled"
-                    @click="cancelOrder"
-                  >Cancel order
+                    @click="cancelOrder">Cancel order
                     <span class="icon"><i class="fa fa-exclamation-triangle" /></span>
                   </a>
                   <a
                     v-if="data.order.cancelled && !data.order.processed"
-                    @click="cancelOrder('uncancel')"
-                  >Un-cancel order
+                    @click="cancelOrder('uncancel')">Un-cancel order
                     <span class="icon"><i class="fa fa-exclamation-triangle" /></span>
                   </a>
                 </template>
@@ -450,8 +416,7 @@
               <td>
                 <b-tag
                   v-if="data.order.completed"
-                  type="is-success"
-                >
+                  type="is-success">
                   {{ data.order.completed }}
                 </b-tag>
               </td>
@@ -466,8 +431,7 @@
                 <b-tooltip
                   label="Defines the type of consumer personal identifier that has been used, during the payment method journey"
                   multilined
-                  style="margin-left: 5px"
-                >
+                  style="margin-left: 5px">
                   <i class="fa fa-question-circle-o cursor" />
                 </b-tooltip>
               </td>
@@ -479,8 +443,7 @@
                 <b-tooltip
                   label="IP address of user, when the order was made."
                   multilined
-                  style="margin-left: 5px"
-                >
+                  style="margin-left: 5px">
                   <i class="fa fa-question-circle-o cursor" />
                 </b-tooltip>
               </td>
@@ -492,8 +455,7 @@
                 <td>
                   <a
                     target="_blank"
-                    :href="`https://www.moonpay.io/transactions/${data.order.poliId}/`"
-                  >
+                    :href="`https://www.moonpay.io/transactions/${data.order.poliId}/`">
                     {{ data.order.poliId }}
                     <span class="icon"><i class="fa fa-external-link" /></span>
                   </a>
@@ -504,8 +466,7 @@
                 <td>
                   <a
                     target="_blank"
-                    :href="`https://developers.transferzero.com/organizations/46100115-0916-4a64-a691-4db25bc59012/mto/transactions/${data.order.poliId}?environment_id=live`"
-                  >
+                    :href="`https://developers.transferzero.com/organizations/46100115-0916-4a64-a691-4db25bc59012/mto/transactions/${data.order.poliId}?environment_id=live`">
                     {{ data.order.poliId }}
                     <span class="icon"><i class="fa fa-external-link" /></span>
                   </a>
@@ -516,8 +477,7 @@
                 <td>
                   <a
                     target="_blank"
-                    :href="`https://api.easycrypto.nz/apiv2/scripts/get-indacoin-info.php?id=${data.order.poliId}`"
-                  >
+                    :href="`https://api.easycrypto.nz/apiv2/scripts/get-indacoin-info.php?id=${data.order.poliId}`">
                     {{ data.order.poliId }}
                     <span class="icon"><i class="fa fa-external-link" /></span>
                   </a>
@@ -546,22 +506,21 @@
                 <b-tooltip
                   label="Visible if customer has selected no to to owning the addresses in this order"
                   multilined
-                  style="margin-left: 5px"
-                >
+                  style="margin-left: 5px">
                   <i class="fa fa-question-circle-o cursor" />
                 </b-tooltip>
               </td>
               <td>
                 <div
                   v-for="(record, i) in data.items"
-                  :key="'ptr' + i"
-                >
+                  :key="'ptr' + i">
                   <div v-if="record.ptrInformation.length && !record.ptrInformation[0].ownAddress">
                     <strong>Coin: </strong>
                     <span class="crypto-address">{{ data.items[i].coin }}</span><br>
                     <strong>Address Owner:</strong> {{ record.ptrInformation[0].addressType }}
                     <div v-if="record.ptrInformation[0].addressType === 'Individual'">
-                      <strong>Name:</strong> {{ record.ptrInformation[0].firstName + ' ' + record.ptrInformation[0].lastName }}
+                      <strong>Name:</strong> {{ record.ptrInformation[0].firstName + ' ' +
+                        record.ptrInformation[0].lastName }}
                     </div>
                     <div v-else>
                       <strong>Company Name:</strong> {{ record.ptrInformation[0].companyName }}
@@ -586,8 +545,7 @@
                 <b-tooltip
                   label="Rates used in frontend to quote during order creation."
                   multilined
-                  style="margin-left: 5px"
-                >
+                  style="margin-left: 5px">
                   <i class="fa fa-question-circle-o cursor" />
                 </b-tooltip>
               </td>
@@ -595,8 +553,7 @@
                 <pre
                   v-for="(item, i) in data.items"
                   :key="i"
-                  class="rates-payload"
-                >{{ item.ratesPayload }}</pre>
+                  class="rates-payload">{{ item.ratesPayload }}</pre>
               </td>
             </tr>
             <tr v-if="data.order.direction === 'sell' && data.items[0].networkSelected">
@@ -605,8 +562,7 @@
                 <b-tooltip
                   label="This is the network the user selected to use during the sell process, if no selection is available the default network is filled. Note this may differ from the network used for final deposit."
                   multilined
-                  style="margin-left: 5px"
-                >
+                  style="margin-left: 5px">
                   <i class="fa fa-question-circle-o cursor" />
                 </b-tooltip>
               </td>
@@ -639,36 +595,30 @@
 
                 <b-table-column
                   v-if="data.order.direction === 'sell'"
-                  label="Buy Swap"
-                >
+                  label="Buy Swap">
                   <router-link
                     v-if="!$route.query.orderId"
-                    :to="{name: 'user', query: {uid: props.row.uid, orderId: props.row.orderId}}"
-                  >
+                    :to="{ name: 'user', query: { uid: props.row.uid, orderId: props.row.orderId } }">
                     {{ props.row.externalId }}
                   </router-link>
                   <a
                     v-else
-                    @click="switchOrder(props.row.externalId)"
-                  >
+                    @click="switchOrder(props.row.externalId)">
                     {{ props.row.externalId }}
                   </a>
                 </b-table-column>
 
                 <b-table-column
                   v-if="data.order.direction === 'buy'"
-                  label="Sell Swap"
-                >
+                  label="Sell Swap">
                   <router-link
                     v-if="!$route.query.orderId"
-                    :to="{name: 'user', query: {uid: props.row.uid, orderId: props.row.orderId}}"
-                  >
+                    :to="{ name: 'user', query: { uid: props.row.uid, orderId: props.row.orderId } }">
                     {{ props.row.orderId }}
                   </router-link>
                   <a
                     v-else
-                    @click="switchOrder(props.row.orderId)"
-                  >
+                    @click="switchOrder(props.row.orderId)">
                     {{ props.row.orderId }}
                   </a>
                 </b-table-column>
@@ -678,14 +628,12 @@
 
           <compliance-log
             :uid="uid"
-            :order-id="data.order.orderId"
-          />
+            :order-id="data.order.orderId" />
         </div>
       </div>
       <section
         v-if="hasAccess($roles.Admin)"
-        class="section content"
-      >
+        class="section content">
         <h1>SQL quick commands</h1>
         <h4>Recover private key</h4>
         <pre><clipboard>SELECT orderId, coin, privateKey FROM addresses where `orderId`='{{ data.order.orderId }}';</clipboard></pre>
@@ -704,8 +652,7 @@
           </b-field>
           <b-message
             v-if="refundToCustomer && !data.order.bank"
-            type="is-warning"
-          >
+            type="is-warning">
             This customer has no bank account details on the order, so we can't send it back to their account.
           </b-message>
           <template v-else>
@@ -740,8 +687,7 @@
             <b-input
               v-model="refundFee"
               type="number"
-              placeholder="Enter fee amount"
-            />
+              placeholder="Enter fee amount" />
           </b-field>
           <h5>UDB</h5>
           <pre><clipboard>
@@ -794,8 +740,7 @@
       class="sticky-update-btn"
       icon-left="refresh"
       @click="refreshPage"
-      :class="{'is-loading': loading}"
-    >
+      :class="{ 'is-loading': loading }">
       Refresh
     </b-button>
   </div>
@@ -808,11 +753,11 @@ import Clipboard from './parts/Clipboard.vue'
 import ChainalysisLink from './parts/ChainalysisLink.vue'
 import { UNUSUAL_ACTIVITY } from './parts/user/UnusualActivityDropdown.vue'
 import router from '@/router'
-import Refund from './parts/order/Refund.vue';
+import Refund from './parts/order/Refund.vue'
 
 export default {
   name: 'Order',
-  components: {Refund, BlockchainLink, ComplianceLog, Clipboard, ChainalysisLink},
+  components: { Refund, BlockchainLink, ComplianceLog, Clipboard, ChainalysisLink },
   props: {
     selectedOrderId: {
       type: String,
@@ -901,21 +846,21 @@ export default {
     },
     orderOrigin () {
       switch (this.data.order.isFromWalletApp) {
-      case 1:
-        return {
-          label: 'App',
-          tag: 'is-info'
-        }
-      case 2:
-        return {
-          label: 'W2A',
-          tag: 'is-primary'
-        }
-      default:
-        return {
-          label: 'Web',
-          tag: ''
-        }
+        case 1:
+          return {
+            label: 'App',
+            tag: 'is-info'
+          }
+        case 2:
+          return {
+            label: 'W2A',
+            tag: 'is-primary'
+          }
+        default:
+          return {
+            label: 'Web',
+            tag: ''
+          }
       }
     },
     hasSellProcessingFee () {
@@ -1113,7 +1058,7 @@ Please make sure to copy and paste the address. Do not type it by hand as that c
         }
 
         // get eftpos payer ID
-        if(data.order.method === 'eftpos'){
+        if (data.order.method === 'eftpos') {
           this.getEftposPayerId()
         }
 
@@ -1133,8 +1078,8 @@ Please make sure to copy and paste the address. Do not type it by hand as that c
         data.order.bankName = bankName
         this.data = data
         // if uid mismatches uid of order redirect to old order page
-        if(this.$route.query.uid && this.$route.query.uid !== this.data.order.uid){
-          this.$router.push({path: '/order', query: {orderId}})
+        if (this.$route.query.uid && this.$route.query.uid !== this.data.order.uid) {
+          this.$router.push({ path: '/order', query: { orderId } })
         }
       } catch (e) {
         console.log(e)
@@ -1187,7 +1132,7 @@ Please make sure to copy and paste the address. Do not type it by hand as that c
       }
 
       // Generic internal refund account details - this will deliver the funds internally back to EC
-      const refundUid = 'cJan0oAAi1WfxgdnplbLmIoKRTI2'
+      const refundUid = '00YYuuw7CqNmLoHU73nSgmh7Jad2'
       const refundBank = '00-0000-0000000-00'
 
       const originalOrder = this.data.order
