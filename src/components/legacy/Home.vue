@@ -9,9 +9,9 @@
           <h3 class="is-size-6">
             <b>Issues</b>
           </h3>
-          <b-loading
+          <!-- <b-loading
             :is-full-page="false"
-            :active="!getAge($store.getters['info/isFresh']) || infoRefresh" />
+            :active="!getAge($store.getters['info/isFresh']) || infoRefresh" /> -->
           <table class="table">
             <tbody>
               <tr>
@@ -69,9 +69,9 @@
           v-if="hasAccess($roles.Admin)"
           class="column"
           style="position:relative">
-          <b-loading
+          <!-- <b-loading
             :is-full-page="false"
-            :active="infoRefresh" />
+            :active="infoRefresh" /> -->
           <h3 class="is-size-6">
             <b>{{ floatSymbol }} balances</b>
             <span
@@ -118,9 +118,9 @@
           </h3>
           <table class="table">
             <tbody>
-              <b-loading
+              <!-- <b-loading
                 :active="infoRefresh"
-                :is-full-page="false" />
+                :is-full-page="false" /> -->
               <tr
                 v-for="(row, i) in $store.getters['info/balances']('BTC')"
                 :key="i">
@@ -302,6 +302,7 @@
 <script>
 import { mapState } from 'vuex'
 import { useRoleAccess } from '@/composables/useRoleAccess'
+import { useUtils } from '@/composables/useUtils'
 
 export default {
   name: 'Home',
@@ -311,9 +312,15 @@ export default {
     }
   },
   setup () {
-    const { routeAccess } = useRoleAccess()
+    const { hasAccess, routeAccess } = useRoleAccess()
+    const { cryptoNum, currency, price, niceNumber } = useUtils()
     return {
-      routeAccess
+      hasAccess,
+      routeAccess,
+      cryptoNum,
+      currency,
+      price,
+      niceNumber
     }
   },
   computed: {

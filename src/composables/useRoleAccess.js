@@ -44,5 +44,5 @@ export function useRoleAccess () {
     return hasAccess(authorize)
   }
 
-  return { routeAccess }
+  return { hasAccess, routeAccess }
 }
