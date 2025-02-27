@@ -1,17 +1,29 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import { RouterView } from 'vue-router'
 import { useStore } from 'vuex'
 import { useHead } from '@unhead/vue'
 import Login from './views/Login.vue'
+import { useAuthService } from './service/useAuthService'
 
 const store = useStore()
+const { refreshToken } = useAuthService()
 
 const unread = computed(() => store.getters['info/unread'])
 
 // Head management
 useHead({
   title: () => `(${unread}) ECA Admin - Easy Crypto`
+})
+
+// Todo: move to new api interceptor
+onMounted(() => {
+  setInterval(() => {
+    // Regularly update all stores
+    // this.updateAllStore()
+    // Renew token
+    refreshToken()
+  }, 5 * 60 * 1000)
 })
 
 </script>

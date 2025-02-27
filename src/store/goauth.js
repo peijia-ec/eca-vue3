@@ -48,10 +48,10 @@ const mutations = {
 }
 
 const actions = {
-  async reset ({commit}) {
+  async reset ({ commit }) {
     commit('resetState')
   },
-  async update ({state, commit}, data) {
+  async update ({ state, commit }, data) {
     commit('authenticate', data)
   }
 }

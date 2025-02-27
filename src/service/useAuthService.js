@@ -48,10 +48,29 @@ export function useAuthService () {
       })
   }
 
-  /**
-   * Used to sign in to the system
-   * @returns {*}
-   */
+  async function refreshToken () {
+    await api(local.authServer, {
+      action: 'refreshToken',
+      refresh: store.state.goauth.refresh
+    }, false).then((res) => {
+      if (res.success && res.hasOwnProperty('data') && res.data) {
+        let authdata = {
+          email: res.data.email,
+          name: res.data.name,
+          photo: res.data.photo,
+          roles: res.data.roles,
+          token: res.data.accessToken,
+          refresh: res.data.refreshToken
+        }
+        store.dispatch('goauth/update', authdata)
+      }
+    }).catch(error => {
+      // Access token expired before renewing. Need to sign out first for safety
+      console.log('error', error)
+      signOut()
+    })
+  }
+
   async function login (accessToken) {
     await api(local.authServer, {
       action: 'login',
@@ -71,10 +90,6 @@ export function useAuthService () {
     })
   }
 
-  /**
-   * Used to sign out from the system
-   * @returns {*}
-   */
   async function signOut () {
     let res = await gAuth.signOut()
     if (res) {
@@ -85,6 +100,6 @@ export function useAuthService () {
     }
   }
 
-  return { loginWithGoogle, signOut }
+  return { loginWithGoogle, refreshToken, signOut }
 
 }

@@ -81,6 +81,7 @@ declare module 'vue' {
     Search: typeof import('./src/components/legacy/Search.vue')['default']
     SelectButton: typeof import('primevue/selectbutton')['default']
     Sell: typeof import('./src/components/legacy/Sell.vue')['default']
+    Skeleton: typeof import('primevue/skeleton')['default']
     SmileIdHealthDropdown: typeof import('./src/components/legacy/parts/verification/SmileIdHealthDropdown.vue')['default']
     SnoozedOrders: typeof import('./src/components/legacy/parts/order/SnoozedOrders.vue')['default']
     Stats: typeof import('./src/components/legacy/Stats.vue')['default']
@@ -88,9 +89,7 @@ declare module 'vue' {
     StuckedOrders: typeof import('./src/components/legacy/parts/order/StuckedOrders.vue')['default']
     SuspectOrders: typeof import('./src/components/legacy/SuspectOrders.vue')['default']
     Suspects: typeof import('./src/components/legacy/Suspects.vue')['default']
-    TestTable: typeof import('./src/components/legacy/TestTable.vue')['default']
-    TestTable2: typeof import('./src/components/legacy/TestTable2.vue')['default']
-    TheWelcome: typeof import('./src/components/TheWelcome.vue')['default']
+    Tag: typeof import('primevue/tag')['default']
     Toast: typeof import('primevue/toast')['default']
     ToggleSwitch: typeof import('primevue/toggleswitch')['default']
     ToggleValue: typeof import('./src/components/legacy/parts/user/ToggleValue.vue')['default']
@@ -104,6 +103,7 @@ declare module 'vue' {
     UserLimits: typeof import('./src/components/legacy/parts/user/UserLimits.vue')['default']
     UserNotes: typeof import('./src/components/legacy/parts/UserNotes.vue')['default']
     Users: typeof import('./src/components/legacy/Users.vue')['default']
+    UsersTable: typeof import('./src/components/new/UsersTable.vue')['default']
     UserSummary: typeof import('./src/components/legacy/parts/user/UserSummary.vue')['default']
     UserTags: typeof import('./src/components/legacy/parts/user/UserTags.vue')['default']
     Verification: typeof import('./src/components/legacy/Verification.vue')['default']
@@ -113,5 +113,6 @@ declare module 'vue' {
   }
   export interface ComponentCustomProperties {
     StyleClass: typeof import('primevue/styleclass')['default']
+    Tooltip: typeof import('primevue/tooltip')['default']
   }
 }

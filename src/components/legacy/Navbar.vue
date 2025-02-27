@@ -118,7 +118,6 @@
 </template>
 
 <script>
-import AuthLink from '../new/parts/AuthLink.vue'
 import moment from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'

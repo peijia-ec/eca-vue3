@@ -1,7 +1,4 @@
 import store from './store'
-
-// const local = require('./localisation').default
-// let localConfig = (await import('./src/localisation2')).default
 import local from './localisation'
 
 const api = function (location, data = {}, auth = true, requestMethod = 'POST') {
