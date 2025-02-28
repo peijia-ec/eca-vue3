@@ -1,5 +1,6 @@
 import { computed, reactive } from 'vue'
 
+const DARK_THEME = 'darkTheme'
 const layoutConfig = reactive({
   preset: 'Aura',
   primary: 'emerald',
@@ -19,6 +20,15 @@ const layoutState = reactive({
 })
 
 export function useLayout () {
+  const initLayout = () => {
+    layoutConfig.darkTheme = localStorage.getItem(DARK_THEME) === 'true'
+    if (layoutConfig.darkTheme) {
+      document.documentElement.classList.add('app-dark')
+    } else {
+      document.documentElement.classList.remove('app-dark')
+    }
+  }
+
   const setActiveMenuItem = (item) => {
     layoutState.activeMenuItem = item.value || item
   }
@@ -26,16 +36,16 @@ export function useLayout () {
   const toggleDarkMode = () => {
     if (!document.startViewTransition) {
       executeDarkModeToggle()
-
       return
     }
 
-    document.startViewTransition(() => executeDarkModeToggle(event))
+    document.startViewTransition(() => executeDarkModeToggle(event)) // event is deprecated, suggest alternative
   }
 
   const executeDarkModeToggle = () => {
     layoutConfig.darkTheme = !layoutConfig.darkTheme
     document.documentElement.classList.toggle('app-dark')
+    localStorage.setItem(DARK_THEME, layoutConfig.darkTheme)
   }
 
   const toggleMenu = () => {
@@ -66,6 +76,7 @@ export function useLayout () {
     isDarkTheme,
     getPrimary,
     getSurface,
+    initLayout,
     setActiveMenuItem,
     toggleDarkMode
   }

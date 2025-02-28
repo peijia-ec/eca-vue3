@@ -1,12 +1,14 @@
 <script setup>
-import { computed, onMounted } from 'vue'
+import { computed, onBeforeMount, onMounted } from 'vue'
 import { RouterView } from 'vue-router'
 import { useStore } from 'vuex'
 import { useHead } from '@unhead/vue'
 import Login from './views/Login.vue'
 import { useAuthService } from './service/useAuthService'
+import { useLayout } from './layout/composables/layout'
 
 const store = useStore()
+const { initLayout } = useLayout()
 const { refreshToken } = useAuthService()
 
 const unread = computed(() => store.getters['info/unread'])
@@ -14,6 +16,10 @@ const unread = computed(() => store.getters['info/unread'])
 // Head management
 useHead({
   title: () => `(${unread}) ECA Admin - Easy Crypto`
+})
+
+onBeforeMount(() => {
+  initLayout()
 })
 
 // Todo: move to new api interceptor
