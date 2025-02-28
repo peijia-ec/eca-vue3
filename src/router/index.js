@@ -42,7 +42,7 @@ const router = createRouter({
       {
         path: '/users',
         name: 'users',
-        component: () => import('@/components/legacy/Users.vue'),
+        component: () => import('@/views/Users.vue'),
         meta: { authorize: [] }
       },
       {

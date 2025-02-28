@@ -102,7 +102,7 @@ declare module 'vue' {
     UserAutobuys: typeof import('./src/components/legacy/parts/user/UserAutobuys.vue')['default']
     UserLimits: typeof import('./src/components/legacy/parts/user/UserLimits.vue')['default']
     UserNotes: typeof import('./src/components/legacy/parts/UserNotes.vue')['default']
-    Users: typeof import('./src/components/legacy/Users.vue')['default']
+    Users: typeof import('./src/views/Users.vue')['default']
     UsersTable: typeof import('./src/components/new/UsersTable.vue')['default']
     UserSummary: typeof import('./src/components/legacy/parts/user/UserSummary.vue')['default']
     UserTags: typeof import('./src/components/legacy/parts/user/UserTags.vue')['default']

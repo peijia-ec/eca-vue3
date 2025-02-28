@@ -49,6 +49,10 @@
             <Tag v-if="isTag(col.field) && data[col.field]" :value="data[col.field]" severity="success" />
             <p v-else-if="col.field === 'created'">{{ dayjs(data.created).format('YYYY-MM-DD') }}</p>
             <p v-else-if="col.field === 'lastLogin'">{{ dayjs(data.lastLogin).format('YYYY-MM-DD hh:mm') }}</p>
+            <div v-else-if="col.field === 'sus'">
+              <Tag v-if="data['fraud'] || data['suspicious']" :value="susLabel(data)" severity="danger" />
+              <p v-else>{{ data['sus'] }}</p>
+            </div>
             <p v-else-if="col.field === 'totalValue'">{{ `$${data.totalValue}` }}</p>
             <div v-else-if="col.field === 'drip'">
               <Button
@@ -67,7 +71,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, computed } from 'vue'
 import { useUserService } from '@/service/useUserService'
 import dayjs from 'dayjs'
 
@@ -145,6 +149,14 @@ const handlePerPage = (num) => {
 
 const isTag = (field) => {
   return field === 'tier' || field === 'verificationMethod'
+}
+
+const susLabel = ({ fraud, suspicious }) => {
+  if (fraud) {
+    return 'Fraud'
+  } else if (suspicious) {
+    return 'Suspicious'
+  }
 }
 
 const handleFetch = () => {
