@@ -1,6 +1,9 @@
 import local from '@/localisation'
+import { computed } from 'vue'
 
 export function useUtils () {
+  const mobile = computed(() => window.innerWidth <= 768)
+
   const cryptoNum = (amount, precision = 8) => {
     return Math.round(amount * Math.pow(10, precision)) / Math.pow(10, precision)
   }
@@ -92,5 +95,5 @@ export function useUtils () {
     }, style)).format(amount)
   }
 
-  return { cryptoNum, currency, price, niceNumber }
+  return { mobile, cryptoNum, currency, price, niceNumber }
 }
