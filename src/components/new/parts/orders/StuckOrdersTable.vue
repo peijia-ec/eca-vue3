@@ -1,8 +1,8 @@
 <script setup>
+import Tag from 'primevue/tag'
 import store from '@/store'
 import dayjs from 'dayjs'
 import { useUtils } from '@/composables/useUtils'
-import Tag from 'primevue/tag'
 
 const params = ref({
   page: 1,
@@ -22,7 +22,7 @@ const referral = ref(false)
 const columns = [{
   field: 'created',
   header: 'Date',
-  formatter: (val) => dayjs(val).format('DD MMM, HH:mm'), // Format date to YYYY-MM-DD
+  formatter: (val) => dayjs(val).format('DD MMM, HH:mm'),
 }, {
   field: 'orderId',
   header: 'ID'

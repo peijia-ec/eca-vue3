@@ -1,6 +1,8 @@
 <script setup>
-import { useUserService } from '@/service/useUserService'
+import Tag from 'primevue/tag'
 import dayjs from 'dayjs'
+import { useUserService } from '@/service/useUserService'
+import { useUtils } from '@/composables/useUtils'
 
 const { fetchAllUsers } = useUserService()
 
@@ -16,14 +18,18 @@ const referral = ref(false)
 const total = ref(0)
 const users = ref()
 
+const { currency } = useUtils()
+
 const columns = [{
   field: 'created',
   header: 'Created',
-  sortable: true
+  sortable: true,
+  formatter: (val) => dayjs(val).format('YYYY-MM-DD'),
 }, {
   field: 'lastLogin',
   header: 'Last login',
-  sortable: true
+  sortable: true,
+  formatter: (val) => dayjs(val).format('YYYY-MM-DD hh:mm'),
 }, {
   field: 'email',
   header: 'Email'
@@ -35,19 +41,32 @@ const columns = [{
   header: 'Name'
 }, {
   field: 'verificationMethod',
-  header: 'Verified'
+  header: 'Verified',
+  component: Tag,
+  props: (val) => ({ value: val.verificationMethod, severity: 'success' }),
 }, {
   field: 'bankName',
   header: 'Bank name'
 }, {
   field: 'sus',
-  header: 'SUS'
+  header: 'SUS',
+  component: Tag,
+  props: (val) => ({
+    value: susLabel(val),
+    severity: val.fraud || val.suspicious ? 'danger' : 'secondary'
+  }),
 }, {
   field: 'tier',
-  header: 'Tier'
+  header: 'Tier',
+  component: Tag,
+  props: (val) => ({
+    value: val.tier,
+    severity: val.tier > 0 ? 'success' : 'secondary'
+  }),
 }, {
   field: 'totalValue',
-  header: 'Value'
+  header: 'Value',
+  formatter: (val) => currency(val),
 }]
 
 onMounted(() => {
@@ -74,16 +93,13 @@ const handlePerPage = (num) => {
   handleFetch()
 }
 
-const isTag = (field) => {
-  return field === 'tier' || field === 'verificationMethod'
-}
-
-const susLabel = ({ fraud, suspicious }) => {
+const susLabel = ({ fraud, suspicious, sus }) => {
   if (fraud) {
     return 'Fraud'
   } else if (suspicious) {
     return 'Suspicious'
   }
+  return sus
 }
 
 const handleFetch = () => {
@@ -153,15 +169,7 @@ const handleFetch = () => {
         <template #body="{ data }">
           <Skeleton v-if="loading"></Skeleton>
           <template v-else>
-            <Tag v-if="isTag(col.field) && data[col.field]" :value="data[col.field]" severity="success" />
-            <p v-else-if="col.field === 'created'">{{ dayjs(data.created).format('YYYY-MM-DD') }}</p>
-            <p v-else-if="col.field === 'lastLogin'">{{ dayjs(data.lastLogin).format('YYYY-MM-DD hh:mm') }}</p>
-            <div v-else-if="col.field === 'sus'">
-              <Tag v-if="data['fraud'] || data['suspicious']" :value="susLabel(data)" severity="danger" />
-              <p v-else>{{ data['sus'] }}</p>
-            </div>
-            <p v-else-if="col.field === 'totalValue'">{{ `$${data.totalValue}` }}</p>
-            <div v-else-if="col.field === 'drip'">
+            <div v-if="col.field === 'drip'">
               <Button
                 v-if="data.dripId" as="a" :href="'https://www.getdrip.com/' + $local.drip + '/subscribers/' + data.dripId"
                 icon="pi pi-envelope" severity="info" size="small" rounded variant="outlined" aria-label="Drip" />
@@ -169,7 +177,11 @@ const handleFetch = () => {
             <p v-else-if="col.field === 'email'">
               <Button :label="data[col.field]" class="p-0" color="primary" variant="link" />
             </p>
-            <p v-else>{{ data[col.field] }}</p>
+            <component
+              v-else-if="col.component"
+              :is="col.component"
+              v-bind="col.props ? col.props(data) : {}" />
+            <p v-else>{{ col.formatter ? col.formatter(data[col.field]) : data[col.field] }}</p>
           </template>
         </template>
       </Column>
