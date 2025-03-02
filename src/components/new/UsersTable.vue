@@ -1,77 +1,4 @@
-
-<template>
-  <div class="card">
-    <DataTable
-      :value="users"
-      :lazy="true"
-      :paginator="true"
-      :rows="perPage"
-      :rows-per-page-options="[15, 30, 50, 100]"
-      :total-records="total"
-      @page="handlePage"
-      @sort="handleSort"
-      @update:rows="handlePerPage">
-      <template #header>
-        <div class="flex justify-between items-center">
-          <div class="flex items-center gap-2">
-            <ToggleSwitch
-              v-model="suspicious"
-              input-id="input-suspicious" />
-            <label
-              for="input-suspicious"
-              class="mr-2">Suspicious</label>
-            <ToggleSwitch
-              v-model="referral"
-              input-id="input-referral" />
-            <label for="input-referral">Referral</label>
-          </div>
-          <div class="flex">
-            <IconField>
-              <InputIcon class="pi pi-search" />
-              <InputText
-                v-model="search"
-                placeholder="Search"
-                @keydown.enter="handleFetch" />
-            </IconField>
-            <Button icon="pi pi-refresh" variant="text" rounded class="ml-2" aria-label="Refresh" @click="handleFetch" />
-          </div>
-        </div>
-      </template>
-      <Column
-        v-for="col in columns"
-        :key="col.field"
-        :field="col.field"
-        :header="col.header"
-        :sortable="col.sortable">
-        <template #body="{ data }">
-          <Skeleton v-if="loading"></Skeleton>
-          <template v-else>
-            <Tag v-if="isTag(col.field) && data[col.field]" :value="data[col.field]" severity="success" />
-            <p v-else-if="col.field === 'created'">{{ dayjs(data.created).format('YYYY-MM-DD') }}</p>
-            <p v-else-if="col.field === 'lastLogin'">{{ dayjs(data.lastLogin).format('YYYY-MM-DD hh:mm') }}</p>
-            <div v-else-if="col.field === 'sus'">
-              <Tag v-if="data['fraud'] || data['suspicious']" :value="susLabel(data)" severity="danger" />
-              <p v-else>{{ data['sus'] }}</p>
-            </div>
-            <p v-else-if="col.field === 'totalValue'">{{ `$${data.totalValue}` }}</p>
-            <div v-else-if="col.field === 'drip'">
-              <Button
-                v-if="data.dripId" as="a" :href="'https://www.getdrip.com/' + $local.drip + '/subscribers/' + data.dripId"
-                icon="pi pi-envelope" severity="info" size="small" rounded variant="outlined" aria-label="Drip" />
-            </div>
-            <p v-else-if="col.field === 'email'">
-              <Button :label="data[col.field]" class="p-0" color="primary" variant="link" />
-            </p>
-            <p v-else>{{ data[col.field] }}</p>
-          </template>
-        </template>
-      </Column>
-    </DataTable>
-  </div>
-</template>
-
 <script setup>
-import { ref, onMounted, watch, computed } from 'vue'
 import { useUserService } from '@/service/useUserService'
 import dayjs from 'dayjs'
 
@@ -177,3 +104,75 @@ const handleFetch = () => {
   })
 }
 </script>
+
+<template>
+  <div class="card">
+    <DataTable
+      :value="users"
+      :lazy="true"
+      :paginator="true"
+      :rows="perPage"
+      :rows-per-page-options="[15, 30, 50, 100]"
+      :total-records="total"
+      :loading="!users && loading"
+      @page="handlePage"
+      @sort="handleSort"
+      @update:rows="handlePerPage">
+      <template #header>
+        <div class="flex justify-between items-center flex-wrap">
+          <div class="flex items-center gap-2 mb-4 md:mb-0">
+            <ToggleSwitch
+              v-model="suspicious"
+              input-id="input-suspicious" />
+            <label
+              for="input-suspicious"
+              class="mr-2">Suspicious</label>
+            <ToggleSwitch
+              v-model="referral"
+              input-id="input-referral" />
+            <label for="input-referral">Referral</label>
+          </div>
+          <div class="flex">
+            <IconField>
+              <InputIcon class="pi pi-search" />
+              <InputText
+                v-model="search"
+                placeholder="Search"
+                @keydown.enter="handleFetch" />
+            </IconField>
+            <Button icon="pi pi-refresh" variant="text" rounded class="ml-2" aria-label="Refresh" @click="handleFetch" />
+          </div>
+        </div>
+      </template>
+      <Column
+        v-for="col in columns"
+        :key="col.field"
+        :field="col.field"
+        :header="col.header"
+        :sortable="col.sortable">
+        <template #body="{ data }">
+          <Skeleton v-if="loading"></Skeleton>
+          <template v-else>
+            <Tag v-if="isTag(col.field) && data[col.field]" :value="data[col.field]" severity="success" />
+            <p v-else-if="col.field === 'created'">{{ dayjs(data.created).format('YYYY-MM-DD') }}</p>
+            <p v-else-if="col.field === 'lastLogin'">{{ dayjs(data.lastLogin).format('YYYY-MM-DD hh:mm') }}</p>
+            <div v-else-if="col.field === 'sus'">
+              <Tag v-if="data['fraud'] || data['suspicious']" :value="susLabel(data)" severity="danger" />
+              <p v-else>{{ data['sus'] }}</p>
+            </div>
+            <p v-else-if="col.field === 'totalValue'">{{ `$${data.totalValue}` }}</p>
+            <div v-else-if="col.field === 'drip'">
+              <Button
+                v-if="data.dripId" as="a" :href="'https://www.getdrip.com/' + $local.drip + '/subscribers/' + data.dripId"
+                icon="pi pi-envelope" severity="info" size="small" rounded variant="outlined" aria-label="Drip" />
+            </div>
+            <p v-else-if="col.field === 'email'">
+              <Button :label="data[col.field]" class="p-0" color="primary" variant="link" />
+            </p>
+            <p v-else>{{ data[col.field] }}</p>
+          </template>
+        </template>
+      </Column>
+    </DataTable>
+  </div>
+</template>
