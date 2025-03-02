@@ -138,24 +138,24 @@ const formatOrdersData = ({ data, rootState }) => {
 
       if (!row.processed && row.suspicious) {
         status = 'Suspicious'
-        tag = 'is-danger'
+        tag = 'danger'
         info = 'Paid ' + moment(row.paid).format(format)
       } else if (row.holdTilReceived && !row.received) {
         status = 'Bank'
-        tag = 'is-warning'
+        tag = 'warn'
         info = 'Held until payment received'
       } else if (row.invalidAddress) {
         status = 'Invalid'
-        tag = 'is-warning'
+        tag = 'warn'
         info = 'Invalid address or memo in order'
       } else if (!delayed && row.hold && row.processed) {
         status = 'Held'
-        tag = 'is-dark'
+        tag = 'contrast'
         info = 'Held ' + moment(row.hold).format(format)
       } else {
         if (!status) {
           status = 'Paid'
-          tag = 'is-light'
+          tag = 'secondary'
           info = 'Paid ' + moment(row.paid).format(format)
         }
 
