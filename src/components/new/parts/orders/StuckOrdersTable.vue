@@ -3,6 +3,8 @@ import Tag from 'primevue/tag'
 import store from '@/store'
 import dayjs from 'dayjs'
 import { useUtils } from '@/composables/useUtils'
+import DripButton from '../users/DripButton.vue'
+import EmailLink from '../users/EmailLink.vue'
 
 const params = ref({
   page: 1,
@@ -28,14 +30,18 @@ const columns = [{
   header: 'ID'
 }, {
   field: 'email',
-  header: 'Email'
+  header: 'Email',
+  component: EmailLink,
+  props: (val) => ({ user: val.user })
 }, {
   field: 'coins',
   header: 'Coin',
   formatter: (val) => val.map(v => v.coin).join(', ')
 }, {
   field: 'drip',
-  header: 'Drip'
+  header: 'Drip',
+  component: DripButton,
+  props: (val) => ({ hideIf: !val.dripId, dripId: val.dripId })
 }, {
   field: 'total',
   header: 'Total',
@@ -108,7 +114,7 @@ const handleFetch = async (newParams) => {
       <template #body="{ data }">
         <Skeleton v-if="loading"></Skeleton>
         <component
-          v-else-if="col.component"
+          v-else-if="col.component && !col.props(data).hideIf"
           :is="col.component"
           v-bind="col.props ? col.props(data) : {}" />
         <p v-else>{{ col.formatter ? col.formatter(data[col.field]) : data[col.field] }}</p>

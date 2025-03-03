@@ -5,6 +5,7 @@ import dayjs from 'dayjs'
 import { useUserService } from '@/service/useUserService'
 import { useUtils } from '@/composables/useUtils'
 import DripButton from './parts/users/DripButton.vue'
+import EmailLink from './parts/users/EmailLink.vue'
 
 const { fetchAllUsers } = useUserService()
 
@@ -35,8 +36,8 @@ const columns = [{
 }, {
   field: 'email',
   header: 'Email',
-  component: Button,
-  props: (val) => ({ label: val.email, class: 'p-0', color: 'primary', variant: 'link' })
+  component: EmailLink,
+  props: (val) => ({ user: val })
 }, {
   field: 'drip',
   header: 'Drip',
@@ -49,7 +50,7 @@ const columns = [{
   field: 'verificationMethod',
   header: 'Verified',
   component: Tag,
-  props: (val) => ({ value: val.verificationMethod, severity: 'success' }),
+  props: (val) => ({ hideIf: !val.verificationMethod, value: val.verificationMethod, severity: 'success' }),
 }, {
   field: 'bankName',
   header: 'Bank name'

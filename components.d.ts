@@ -23,7 +23,7 @@ declare module 'vue' {
     BatchPayouts: typeof import('./src/components/legacy/BatchPayouts.vue')['default']
     BlockchainLink: typeof import('./src/components/legacy/parts/BlockchainLink.vue')['default']
     Button: typeof import('primevue/button')['default']
-    Callback: typeof import('./src/components/legacy/Callback.vue')['default']
+    Card: typeof import('primevue/card')['default']
     ChainalysisLink: typeof import('./src/components/legacy/parts/ChainalysisLink.vue')['default']
     ChartStack: typeof import('./src/components/legacy/parts/ChartStack.vue')['default']
     Checklist: typeof import('./src/components/legacy/parts/checklist/Checklist.vue')['default']
@@ -49,8 +49,6 @@ declare module 'vue' {
     FindUser: typeof import('./src/components/legacy/parts/user/FindUser.vue')['default']
     FraudUser: typeof import('./src/components/legacy/parts/FraudUser.vue')['default']
     GoAML: typeof import('./src/components/legacy/GoAML.vue')['default']
-    HeldOrdersTable: typeof import('./src/components/new/parts/orders/HeldOrdersTable.vue')['default']
-    HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     Home: typeof import('./src/components/legacy/Home.vue')['default']
     Icon: typeof import('./src/components/legacy/parts/Icon.vue')['default']
     IconCommunity: typeof import('./src/components/icons/IconCommunity.vue')['default']
@@ -71,7 +69,6 @@ declare module 'vue' {
     Navbar: typeof import('./src/components/legacy/Navbar.vue')['default']
     Order: typeof import('./src/components/legacy/Order.vue')['default']
     OrderFilters: typeof import('./src/components/legacy/parts/order/OrderFilters.vue')['default']
-    Orders: typeof import('./src/components/legacy/Orders.vue')['default']
     OriginDetail: typeof import('./src/components/legacy/parts/verification/OriginDetail.vue')['default']
     OriginSummary: typeof import('./src/components/legacy/parts/verification/OriginSummary.vue')['default']
     OTC: typeof import('./src/components/legacy/OTC.vue')['default']
@@ -123,7 +120,6 @@ declare module 'vue' {
     Verification: typeof import('./src/components/legacy/Verification.vue')['default']
     VerificationImage: typeof import('./src/components/legacy/parts/verification/VerificationImage.vue')['default']
     WebCoins: typeof import('./src/components/legacy/coins/WebCoins.vue')['default']
-    WelcomeItem: typeof import('./src/components/WelcomeItem.vue')['default']
   }
   export interface ComponentCustomProperties {
     StyleClass: typeof import('primevue/styleclass')['default']
