@@ -18,7 +18,7 @@ const router = createRouter({
       {
         path: '/orders',
         name: 'orders',
-        component: () => import('@/components/legacy/Orders.vue'),
+        component: () => import('@/views/Orders.vue'),
         meta: { authorize: [] }
       },
       {

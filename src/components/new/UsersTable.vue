@@ -1,8 +1,10 @@
 <script setup>
 import Tag from 'primevue/tag'
+import Button from 'primevue/button'
 import dayjs from 'dayjs'
 import { useUserService } from '@/service/useUserService'
 import { useUtils } from '@/composables/useUtils'
+import DripButton from './parts/users/DripButton.vue'
 
 const { fetchAllUsers } = useUserService()
 
@@ -32,10 +34,14 @@ const columns = [{
   formatter: (val) => dayjs(val).format('YYYY-MM-DD hh:mm'),
 }, {
   field: 'email',
-  header: 'Email'
+  header: 'Email',
+  component: Button,
+  props: (val) => ({ label: val.email, class: 'p-0', color: 'primary', variant: 'link' })
 }, {
   field: 'drip',
-  header: 'Drip'
+  header: 'Drip',
+  component: DripButton,
+  props: (val) => ({ hideIf: !val.dripId, dripId: val.dripId })
 }, {
   field: 'displayName',
   header: 'Name'
@@ -125,12 +131,12 @@ const handleFetch = () => {
   <div class="card">
     <DataTable
       :value="users"
+      :loading="!users && loading"
       :lazy="true"
       :paginator="true"
       :rows="perPage"
       :rows-per-page-options="[15, 30, 50, 100]"
       :total-records="total"
-      :loading="!users && loading"
       @page="handlePage"
       @sort="handleSort"
       @update:rows="handlePerPage">
@@ -168,21 +174,11 @@ const handleFetch = () => {
         :sortable="col.sortable">
         <template #body="{ data }">
           <Skeleton v-if="loading"></Skeleton>
-          <template v-else>
-            <div v-if="col.field === 'drip'">
-              <Button
-                v-if="data.dripId" as="a" :href="'https://www.getdrip.com/' + $local.drip + '/subscribers/' + data.dripId"
-                icon="pi pi-envelope" severity="info" size="small" rounded variant="outlined" aria-label="Drip" />
-            </div>
-            <p v-else-if="col.field === 'email'">
-              <Button :label="data[col.field]" class="p-0" color="primary" variant="link" />
-            </p>
-            <component
-              v-else-if="col.component"
-              :is="col.component"
-              v-bind="col.props ? col.props(data) : {}" />
-            <p v-else>{{ col.formatter ? col.formatter(data[col.field]) : data[col.field] }}</p>
-          </template>
+          <component
+            v-else-if="col.component && !col.props(data).hideIf"
+            :is="col.component"
+            v-bind="col.props ? col.props(data) : {}" />
+          <p v-else>{{ col.formatter ? col.formatter(data[col.field]) : data[col.field] }}</p>
         </template>
       </Column>
     </DataTable>
